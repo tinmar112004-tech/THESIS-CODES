@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>GTC Aldis Philippines Inc. · Login</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						fontFamily: {
+							brand: ['"Public Sans"', 'sans-serif'],
+						},
+						colors: {
+							pale: '#dff0ff',
+							cloud: '#f7fbff',
+							sky: '#8bc5ff',
+							tide: '#3f6fb4',
+							deep: '#0d4c8f',
+						},
+					},
+				},
+			};
+		</script>
+	</head>
+	<body class="min-h-screen bg-pale font-brand text-deep">
+		<div class="mx-auto flex min-h-screen w-full max-w-6xl flex-col px-6 py-10">
+			<header class="mb-12 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<div class="h-12 w-12 overflow-hidden rounded-2xl bg-white shadow">
+						<img src="hyundai-appliances-logo.jpg" alt="hyundai appliances logo" class="h-full w-full object-cover" />
+					</div>
+					<div>
+						<p class="text-sm font-medium uppercase tracking-[0.4em]">Hyundai</p>
+						<p class="text-base">Appliances</p>
+					</div>
+				</div>
+			</header>
+
+			<main class="flex flex-1 flex-col gap-8 lg:flex-row lg:items-start">
+				<section class="flex flex-1 items-stretch lg:basis-3/4 lg:self-stretch">
+					<div
+						class="ml-[-40px] mt-[-70px] h-full min-h-[340px] w-full rounded-3xl bg-center bg-contain bg-no-repeat"
+						style="background-image: url('./gtc-logo-transparent.png');"
+>
+						<span class="sr-only">GTC Aldis Philippines Inc. logo</span>
+					</div>
+				</section>
+
+				<section class="flex flex-col rounded-3xl border border-sky/40 bg-white/95 px-8 py-10 shadow-[0_20px_60px_rgba(63,111,180,0.15)] lg:w-[380px] lg:self-start mt-[-90px]">
+					<div class="flex items-center justify-between">
+						<div>
+							<p class="text-xl font-semibold">Employee CRM Portal</p>
+						</div>
+					</div>
+
+					<form class="mt-8 space-y-6">
+						<label class="block text-sm">
+							<span class="text-xs uppercase tracking-[0.3em] text-tide">Company Email / Employee ID</span>
+							<div class="mt-2 rounded-2xl border border-tide/80 bg-cloud px-4 py-3 shadow-inner shadow-white">
+								<input
+									type="text"
+									placeholder="name@gtcaldis.com"
+									class="w-full border-none bg-transparent text-lg text-deep placeholder-deep/40 focus:outline-none"
+								/>
+							</div>
+						</label>
+
+						<label class="block text-sm">
+							<span class="text-xs uppercase tracking-[0.3em] text-tide">Password</span>
+							<div class="mt-2 rounded-2xl border border-tide/80 bg-cloud px-4 py-3 shadow-inner shadow-white">
+								<div class="flex items-center gap-2">
+									<input
+										type="password"
+										placeholder="••••••••"
+										class="flex-1 border-none bg-transparent text-lg font-semibold text-deep placeholder-deep/40 focus:outline-none"
+									/>
+									<button
+										type="button"
+										aria-label="Show password"
+										class="text-lg"
+									></button>
+								</div>
+							</div>
+						</label>
+
+						<div class="flex items-center justify-between text-sm text-deep">
+							<label class="flex items-center gap-2">
+								<input type="checkbox" class="h-4 w-4 rounded border-sky/40 text-sky focus:ring-sky" />
+								<span>Remember this device</span>
+							</label>
+							<button type="button" class="text-deep underline-offset-4 hover:underline">Need help?</button>
+						</div>
+
+						<button
+							id="signInButton"
+							type="button"
+							class="w-full rounded-2xl bg-gradient-to-r from-sky to-tide px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-sky/40 transition hover:shadow-tide/40"
+						>
+							Sign In
+						</button>
+					</form>
+
+					<div class="mt-6 rounded-2xl border border-dashed border-sky/30 bg-cloud/60 px-4 py-3 text-sm text-deep">
+						<p>Only authorized employees are permitted to access this system.</p>
+					</div>
+				</section>
+			</main>
+
+			<div id="otpBanner" class="mt-6 hidden items-center gap-3 rounded-3xl border border-sky/40 bg-white/80 px-6 py-5 text-sm text-deep shadow-lg">
+				<div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky/10 text-2xl">🔒</div>
+				<div>
+					<p class="font-semibold">Verification required</p>
+					<p class="text-sky">A one-time verification code has been sent to your registered company email.</p>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const signInButton = document.getElementById('signInButton');
+			const otpBanner = document.getElementById('otpBanner');
+			if (signInButton && otpBanner) {
+				signInButton.addEventListener('click', () => {
+					otpBanner.classList.remove('hidden');
+					otpBanner.classList.add('flex');
+					otpBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+				});
+			}
+		</script>
+	</body>
+</html>

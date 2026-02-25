@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-sans bg-[#f8fbff] text-[#1a5276]">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-[250px] bg-gradient-to-br from-[#11375E] to-[#2980b9] text-white p-5 shadow-lg overflow-y-auto">
+      <div class="text-center border-b border-white/20 mb-5">
+        <h2 class="text-2xl font-bold tracking-wide">Admin Dashboard</h2>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#" class="block px-5 py-3 text-white/80 hover:bg-white/10 hover:text-white border-l-4 border-transparent hover:border-[#3498db] transition-all duration-300 ease-in-out hover:translate-x-1">Home</a></li>
+          <li><a href="#" class="block px-5 py-3 text-white/80 hover:bg-white/10 hover:text-white border-l-4 border-transparent hover:border-[#3498db] transition-all duration-300 ease-in-out hover:translate-x-1">Analytics</a></li>
+          <li><a href="generatereportspage.html" class="block px-5 py-3 text-white/80 hover:bg-white/10 hover:text-white border-l-4 border-transparent hover:border-[#3498db] transition-all duration-300 ease-in-out hover:translate-x-1">Reports</a></li>
+          <li><a href="#" class="block px-5 py-3 text-white/80 hover:bg-white/10 hover:text-white border-l-4 border-transparent hover:border-[#3498db] transition-all duration-300 ease-in-out hover:translate-x-1">Pending</a></li>
+          <li><a href="loginpage.html" class="block px-5 py-3 text-white/80 hover:bg-white/10 hover:text-white border-l-4 border-transparent hover:border-[#3498db] transition-all duration-300 ease-in-out hover:translate-x-1">Logout</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+      <!-- Header -->
+      <header class="bg-white p-6 shadow flex flex-col md:flex-row justify-between items-center gap-5">
+        <div>
+          <h1 class="text-2xl md:text-3xl text-[#1a5276]">Welcome Back, User</h1>
+        </div>
+        <div class="flex flex-col md:flex-row items-center gap-5 w-full md:w-auto">
+          <!--<input type="search" placeholder="Search..." class="border border-gray-200 rounded px-4 py-2 w-full md:w-64 focus:outline-none focus:border-[#3498db] focus:ring-1 focus:ring-[#3498db]"> -->
+          <div class="flex items-center gap-3 bg-[#e8f4f8] px-4 py-2 rounded-full cursor-pointer hover:bg-[#d1e7f0]">
+            <img src="login-logo.jpg" class="w-9 h-9 rounded-full object-cover">
+            <span>Name</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <section class="p-6 md:p-8 flex-1 overflow-y-auto">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-white p-5 rounded-lg shadow flex gap-4 hover:-translate-y-1 hover:shadow-xl transition">
+            <div class="w-16 h-16 rounded-lg flex items-center justify-center text-2xl bg-[#3498db] text-white">⏳</div>
+            <div>
+              <h3 class="text-sm font-semibold text-gray-500 mb-2">Pending</h3>
+              <p class="text-2xl font-bold text-[#1a5276]">100000</p>
+              <small class="text-xs text-green-500">↑ 0% from last month</small>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-lg shadow flex gap-4 hover:-translate-y-1 hover:shadow-xl transition">
+            <div class="w-16 h-16 rounded-lg flex items-center justify-center text-2xl bg-[#2980b9] text-white">✓</div>
+            <div>
+              <h3 class="text-sm font-semibold text-gray-500 mb-2">Resolved</h3>
+              <p class="text-2xl font-bold text-[#1a5276]">100000</p>
+              <small class="text-xs text-green-500">↑ 0% from last month</small>
+            </div>
+          </div>
+
+          <div class="bg-white p-5 rounded-lg shadow flex gap-4 hover:-translate-y-1 hover:shadow-xl transition">
+            <div class="w-16 h-16 rounded-lg flex items-center justify-center text-2xl bg-[#4a90bb] text-white">✓</div>
+            <div>
+              <h3 class="text-sm font-semibold text-gray-500 mb-2">Approved</h3>
+              <p class="text-2xl font-bold text-[#1a5276]">100000</p>
+              <small class="text-xs text-green-500">↑ 0% from last month</small>
+            </div>
+          </div>
+        </div>
+
+<!-- Charts Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <!-- Header -->
+    <div class="flex justify-between items-center p-5 border-b border-gray-200">
+      <h3 class="text-lg font-semibold text-[#1a5276]">Pending Reports</h3>
+      <select class="border border-gray-200 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#3498db] focus:ring-1 focus:ring-[#3498db]">
+        <option>Last 7 days</option>
+        <option>Last 30 days</option>
+        <option>Last year</option>
+      </select>
+    </div>
+
+    <!-- Table -->
+    <div class="p-5 overflow-x-auto">
+      <table class="min-w-full border border-gray-200 rounded-lg">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Date</th>
+            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Report Type</th>
+            <th class="px-4 py-2 text-left text-sm font-medium text-gray-700 border-b">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-2 border-b text-sm text-gray-600">2026-02-18</td>
+            <td class="px-4 py-2 border-b text-sm text-gray-600">Feedback</td>
+            <td class="px-4 py-2 border-b text-sm text-yellow-600 font-semibold">Pending</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-2 border-b text-sm text-gray-600">2026-02-20</td>
+            <td class="px-4 py-2 border-b text-sm text-gray-600">Approval for Replacement</td>
+            <td class="px-4 py-2 border-b text-sm text-yellow-600 font-semibold">Pending</td>
+          </tr>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-2 border-b text-sm text-gray-600">2026-02-22</td>
+            <td class="px-4 py-2 border-b text-sm text-gray-600">Defective</td>
+            <td class="px-4 py-2 border-b text-sm text-yellow-600 font-semibold">Pending</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
