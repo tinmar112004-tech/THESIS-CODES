@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRM – New Complaint Entry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- TOP NAV -->
+<header class="topbar">
+    <div class="left">
+        <button id="menuBtn">☰</button>
+        <span class="logo">CRM</span>
+    </div>
+    <div class="center">Analytical CRM System</div>
+    <div class="right">
+        <span>User Profile</span>
+        <button class="logout">Logout</button>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <ul>
+        <li>Dashboard</li>
+        <li>Customers</li>
+        <li class="active">Complaints</li>
+        <li>Reports</li>
+        <li>Notifications</li>
+    </ul>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="content">
+
+    <h1>New Customer Complaint Entry</h1>
+    <p class="breadcrumb">Complaints > New Complaint</p>
+
+    <form>
+
+        <div class="two-column">
+
+            <!-- LEFT COLUMN -->
+            <div class="left-col">
+
+                <div class="card">
+                    <h3>Retail Customer Information</h3>
+
+                    <label>Customer ID</label>
+                    <div class="inline">
+                        <input type="text">
+                        <button type="button">Search</button>
+                    </div>
+
+                    <label>Business Name</label>
+                    <input type="text">
+
+                    <label>Contact Person</label>
+                    <input type="text">
+
+                    <label>Contact Number</label>
+                    <input type="text">
+
+                    <label>Email Address</label>
+                    <input type="email">
+                </div>
+
+                <div class="card">
+                    <h3>Unit / Appliance Information</h3>
+
+                    <label>Unit ID</label>
+                    <input type="text">
+
+                    <label>Unit Model</label>
+                    <input type="text">
+
+                    <label>Unit Type</label>
+                    <input type="text">
+
+                    <label>Serial Number</label>
+                    <input type="text">
+
+                    <label>Installation Date</label>
+                    <input type="date">
+
+                    <label>Warranty Status</label>
+                    <select>
+                        <option>Under Warranty</option>
+                        <option>Out of Warranty</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- RIGHT COLUMN -->
+            <div class="right-col">
+
+                <div class="card">
+                    <h3>Complaint Control</h3>
+
+                    <label>Control Number</label>
+                    <input type="text" readonly>
+
+                    <label>Date Reported</label>
+                    <input type="date">
+
+                    <label>Status</label>
+                    <select>
+                        <option>Pending</option>
+                        <option>Ongoing</option>
+                        <option>Resolved</option>
+                    </select>
+
+                    <label>Priority</label>
+                    <select>
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <h3>Service Assignment</h3>
+
+                    <label>Assigned Technician</label>
+                    <input type="text">
+
+                    <label>Service Department</label>
+                    <input type="text">
+
+                    <label>Scheduled Service Date</label>
+                    <input type="date">
+
+                    <label>Estimated Resolution Time</label>
+                    <input type="text">
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- COMPLAINT DETAILS -->
+        <div class="card full-width">
+            <h3>Complaint Details</h3>
+
+            <label>Complaint Category</label>
+            <select>
+                <option>Mechanical</option>
+                <option>Electrical</option>
+                <option>Installation</option>
+            </select>
+
+            <label>Date Issue Occurred</label>
+            <input type="date">
+
+            <label>Complaint Description</label>
+            <textarea></textarea>
+        </div>
+
+        <!-- RESOLUTION -->
+        <div class="card full-width">
+            <h3 class="collapsible" id="toggleResolution">▼ Resolution & Follow-up</h3>
+
+            <div id="resolutionSection">
+                <label>Resolution Status</label>
+                <select>
+                    <option>Pending</option>
+                    <option>Resolved</option>
+                </select>
+
+                <label>Resolution Date</label>
+                <input type="date">
+
+                <label>Resolution Summary</label>
+                <textarea></textarea>
+
+                <label>Follow-up Required</label>
+                <select>
+                    <option>No</option>
+                    <option>Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="actions">
+            <button type="button" class="cancel">Cancel</button>
+            <button type="button" class="draft">Save Draft</button>
+            <button type="submit" class="submit">Submit Complaint</button>
+        </div>
+
+    </form>
+
+</main>
+
+<script src="script.js"></script>
+
+<!-- CONFIRMATION MODAL -->
+<div class="modal" id="confirmationModal">
+    <div class="modal-content">
+        <h2>Complaint Submitted Successfully</h2>
+        <p><strong>Control Number:</strong> <span id="confirmControlNumber"></span></p>
+
+        <ul>
+            <li>Please keep your control number for tracking purposes.</li>
+            <li>Our service team will contact you within 24–48 hours.</li>
+            <li>You may use this number for follow-ups and inquiries.</li>
+        </ul>
+
+        <button id="closeModal">OK</button>
+    </div>
+</div>
+
+</body>
+</html>
