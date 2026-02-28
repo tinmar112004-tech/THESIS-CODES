@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRM – Analytics Dashboard</title>
+    <link rel="stylesheet" href="analytics.css">
+</head>
+<body>
+
+<!-- TOP NAVBAR -->
+<header class="topbar">
+    <div class="logo">LOGO</div>
+    <div class="system-name">Analytical CRM System - Analytics</div>
+    <div class="user-area">
+        <span>User Profile</span>
+        <button class="logout">Logout</button>
+    </div>
+</header>
+
+<main class="analytics-container">
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-cards">
+
+        <div class="card defective">
+            <h3>Defective Units</h3>
+            <p class="count">128</p>
+        </div>
+
+        <div class="card replacement">
+            <h3>Approved Replacement</h3>
+            <p class="count">74</p>
+        </div>
+
+        <div class="card feedback">
+            <h3>Customer Feedbacks</h3>
+            <p class="count">215</p>
+        </div>
+
+    </div>
+
+    <!-- FILTER SECTION -->
+    <div class="filters">
+        <label>Date Range</label>
+        <input type="date">
+        <input type="date">
+
+        <label>Category</label>
+        <select>
+            <option>All</option>
+            <option>Defective</option>
+            <option>Approved Replacement</option>
+            <option>Feedback</option>
+        </select>
+
+        <button>Apply Filter</button>
+    </div>
+
+    <!-- CHART SECTION -->
+    <div class="chart-section">
+        <h3>Analytics Overview</h3>
+        <div class="chart-placeholder">
+            Chart will be displayed here
+        </div>
+    </div>
+
+    <!-- DATA TABLE -->
+    <div class="table-section">
+        <h3>Detailed Records</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Customer</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2026-02-20</td>
+                    <td>Juan Dela Cruz</td>
+                    <td>Defective</td>
+                    <td>Pending</td>
+                    <td>High</td>
+                </tr>
+                <tr>
+                    <td>2026-02-18</td>
+                    <td>Maria Santos</td>
+                    <td>Approved Replacement</td>
+                    <td>Completed</td>
+                    <td>Medium</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+</body>
+</html>
