@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Complaint Entry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
+
+  <body class="font-sans bg-[#f0f4f8] text-[#1a5276]">
+    <div id="app" class="flex h-screen overflow-hidden">
+      <aside
+        :class="expanded ? 'w-60' : 'w-16'"
+        class="flex-shrink-0 bg-gradient-to-b from-[#0d2844] to-[#1a4a7a] text-white flex flex-col shadow-2xl overflow-hidden transition-all duration-300 ease-in-out"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+      >
+        <div
+          class="flex items-center gap-3 px-3.5 py-5 border-b border-white/10 min-h-[72px] cursor-pointer flex-shrink-0"
+          @click="toggleSidebar"
+        >
+          <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20 overflow-hidden">
+            <img
+              src="hyundai-appliances-logo.jpg"
+              alt="logo"
+              class="w-full h-full object-cover"
+              onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=&quot;color:white;font-weight:700;font-size:16px&quot;>C</span>'"
+            />
+          </div>
+          <span
+            :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+            class="text-sm font-semibold tracking-wide text-white/90 leading-tight whitespace-nowrap transition-all duration-200 delay-100"
+            >Service Agent<br />Dashboard</span
+          >
+        </div>
+
+        <nav class="flex-1 py-4 flex flex-col gap-0.5 px-2">
+          <div class="relative group">
+            <a
+              href="service-agent dashboard page.html"
+              class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer"
+            >
+              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+              </div>
+              <span
+                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+                class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
+                >Home</span
+              >
+            </a>
+            <div
+              v-if="!expanded"
+              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
+            >
+              Home
+              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <a href="logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span
+                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+                class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
+                >Logs</span
+              >
+            </a>
+            <div
+              v-if="!expanded"
+              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
+            >
+              Logs
+              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            </div>
+          </div>
+
+          <div class="relative group">
+            <a
+              href="complaintform.html"
+              class="flex items-center gap-3 px-2.5 py-3 rounded-xl bg-white/15 transition-all duration-200 cursor-pointer"
+            >
+              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </div>
+              <span
+                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+                class="text-sm font-medium text-white whitespace-nowrap transition-all duration-200 delay-100"
+                >New Complaint</span
+              >
+            </a>
+            <div
+              v-if="!expanded"
+              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
+            >
+              New Complaint
+              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            </div>
+          </div>
+        </nav>
+
+        <div class="px-2 pb-4 border-t border-white/10 pt-3">
+          <div class="relative group">
+            <a href="loginpage.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 cursor-pointer">
+              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white/50 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </div>
+              <span
+                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+                class="text-sm font-medium text-white/50 group-hover:text-red-400 whitespace-nowrap transition-all duration-200 delay-100"
+                >Logout</span
+              >
+            </a>
+            <div
+              v-if="!expanded"
+              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
+            >
+              Logout
+              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="flex-1 flex flex-col overflow-y-auto">
+        <section class="p-6 md:p-8 flex-1 overflow-y-auto">
+          <div class="mb-6">
+            <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#0d2844]">Complaint Form</h1>
+            <p class="text-sm text-gray-500 mt-1">Fill in the details to create a new complaint entry.</p>
+          </div>
+          <form @submit.prevent="submitComplaint" class="space-y-5">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+              <div class="lg:col-span-2 space-y-5">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold text-[#0d2844]">Retail Customer Information</h2>
+                    <button
+                      type="button"
+                      class="text-xs font-medium text-[#0d2844] bg-[#f0f6ff] hover:bg-[#dbeafe] px-3 py-1.5 rounded-lg transition"
+                      @click="toastInfo('Search is not connected yet')"
+                    >
+                      Search Customer
+                    </button>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Customer ID</label>
+                      <input v-model.trim="form.customerId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Business Name</label>
+                      <input v-model.trim="form.businessName" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Contact Person</label>
+                      <input v-model.trim="form.contactPerson" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Contact Number</label>
+                      <input v-model.trim="form.contactNumber" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="text-xs font-medium text-gray-500">Email Address</label>
+                      <input v-model.trim="form.email" type="email" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Unit / Appliance Information</h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Unit ID</label>
+                      <input v-model.trim="form.unitId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Unit Model</label>
+                      <input v-model.trim="form.unitModel" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Unit Type</label>
+                      <input v-model.trim="form.unitType" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Serial Number</label>
+                      <input v-model.trim="form.serialNumber" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Installation Date</label>
+                      <input v-model="form.installationDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Warranty Status</label>
+                      <select v-model="form.warrantyStatus" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option>Under Warranty</option>
+                        <option>Out of Warranty</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Complaint Details</h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Complaint Category</label>
+                      <select v-model="form.category" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option>Mechanical</option>
+                        <option>Electrical</option>
+                        <option>Installation</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Date Issue Occurred</label>
+                      <input v-model="form.issueDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="text-xs font-medium text-gray-500">Complaint Description</label>
+                      <textarea v-model.trim="form.description" rows="4" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-5">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Complaint Control</h2>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Control Number</label>
+                      <input v-model="form.controlNumber" type="text" readonly class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm bg-gray-50 text-gray-600" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Date Reported</label>
+                      <input v-model="form.dateReported" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Status</label>
+                        <select v-model="form.status" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                          <option>Pending</option>
+                          <option>Ongoing</option>
+                          <option>Resolved</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Priority</label>
+                        <select v-model="form.priority" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                          <option>Low</option>
+                          <option>Medium</option>
+                          <option>High</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Service Assignment</h2>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Assigned Technician</label>
+                      <input v-model.trim="form.technician" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Service Department</label>
+                      <input v-model.trim="form.department" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Scheduled Service Date</label>
+                      <input v-model="form.scheduledDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Estimated Resolution Time</label>
+                      <input v-model.trim="form.estimatedResolutionTime" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition"
+                    @click="showResolution = !showResolution"
+                  >
+                    <span class="text-sm font-semibold text-[#0d2844]">Resolution & Follow-up</span>
+                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="showResolution ? 'rotate-180' : 'rotate-0'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div v-show="showResolution" class="px-5 pb-5 space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Resolution Status</label>
+                        <select v-model="form.resolutionStatus" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                          <option>Pending</option>
+                          <option>Resolved</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Resolution Date</label>
+                        <input v-model="form.resolutionDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Resolution Summary</label>
+                      <textarea v-model.trim="form.resolutionSummary" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Follow-up Required</label>
+                      <select v-model="form.followUpRequired" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option>No</option>
+                        <option>Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-end">
+              <a href="service-agent dashboard page.html" class="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition text-center">Cancel</a>
+              <button type="button" class="px-4 py-2 rounded-xl bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 transition" @click="toastInfo('Draft saved locally (not connected yet)')">
+                Save Draft
+              </button>
+              <button
+                type="submit"
+                :disabled="isSubmitting"
+                class="px-5 py-2 rounded-xl bg-[#0d2844] text-white text-sm font-medium hover:bg-[#0a1f38] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              >
+                {{ isSubmitting ? "Submitting..." : "Submit Complaint" }}
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+
+      <div v-if="modalOpen" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-semibold text-[#0d2844]">Complaint Submitted Successfully</h2>
+            <button @click="modalOpen = false" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="bg-[#f0f6ff] border border-blue-100 rounded-xl p-4 mb-4">
+            <p class="text-xs text-gray-500 mb-1">Control Number</p>
+            <p class="text-lg font-bold text-[#0d2844]">{{ form.controlNumber }}</p>
+          </div>
+          <ul class="text-sm text-gray-600 space-y-2 mb-5">
+            <li>Keep your control number for tracking purposes.</li>
+            <li>Our service team will contact you within 24–48 hours.</li>
+            <li>You may use this number for follow-ups and inquiries.</li>
+          </ul>
+          <button @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-[#0d2844] text-white text-sm font-medium hover:bg-[#0a1f38] transition">
+            OK
+          </button>
+        </div>
+      </div>
+
+      <div
+        v-if="toast.show"
+        class="fixed bottom-6 right-6 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl text-white text-sm font-medium z-50 transition-all duration-300"
+        :class="toast.type === 'info' ? 'bg-[#0d2844]' : 'bg-red-500'"
+      >
+        <svg v-if="toast.type === 'info'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 22a10 10 0 110-20 10 10 0 010 20z" />
+        </svg>
+        <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        {{ toast.message }}
+      </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      const pad2 = (n) => String(n).padStart(2, "0");
+
+      function generateControlNumber() {
+        const now = new Date();
+        return (
+          "CMP-" +
+          now.getFullYear() +
+          pad2(now.getMonth() + 1) +
+          pad2(now.getDate()) +
+          "-" +
+          Math.floor(Math.random() * 10000)
+        );
+      }
+
+      function toDateInputValue(d) {
+        const yyyy = d.getFullYear();
+        const mm = pad2(d.getMonth() + 1);
+        const dd = pad2(d.getDate());
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      createApp({
+        data() {
+          const today = new Date();
+          return {
+            expanded: false,
+            hoverTimer: null,
+            showResolution: false,
+            modalOpen: false,
+            isSubmitting: false,
+            toast: { show: false, type: "info", message: "" },
+            form: {
+              customerId: "",
+              businessName: "",
+              contactPerson: "",
+              contactNumber: "",
+              email: "",
+
+              unitId: "",
+              unitModel: "",
+              unitType: "",
+              serialNumber: "",
+              installationDate: "",
+              warrantyStatus: "Under Warranty",
+
+              controlNumber: generateControlNumber(),
+              dateReported: toDateInputValue(today),
+              status: "Pending",
+              priority: "Medium",
+
+              technician: "",
+              department: "",
+              scheduledDate: "",
+              estimatedResolutionTime: "",
+
+              category: "Mechanical",
+              issueDate: "",
+              description: "",
+
+              resolutionStatus: "Pending",
+              resolutionDate: "",
+              resolutionSummary: "",
+              followUpRequired: "No",
+            },
+          };
+        },
+        methods: {
+          onMouseEnter() {
+            this.hoverTimer = setTimeout(() => {
+              this.expanded = true;
+            }, 600);
+          },
+          onMouseLeave() {
+            clearTimeout(this.hoverTimer);
+            this.expanded = false;
+          },
+          toggleSidebar() {
+            clearTimeout(this.hoverTimer);
+            this.expanded = !this.expanded;
+          },
+          showToast(type, message) {
+            this.toast = { show: true, type, message };
+            setTimeout(() => {
+              this.toast.show = false;
+            }, 3000);
+          },
+          toastInfo(message) {
+            this.showToast("info", message);
+          },
+          normalizeSerialNumber(serial) {
+            if (!serial) return null;
+            const asNumber = Number(serial);
+            if (!Number.isNaN(asNumber) && Number.isInteger(asNumber)) {
+              return asNumber;
+            }
+            return null;
+          },
+          buildComplaintPayload() {
+            return {
+              productType: this.form.unitType || "General",
+              productModel: this.form.unitModel || "Unknown Model",
+              complaintDets: this.form.description || "",
+              complaintType: this.form.category || "General",
+              serialNumber: this.normalizeSerialNumber(this.form.serialNumber),
+              status: this.form.status || "Pending",
+              priority: this.form.priority === "High",
+            };
+          },
+          async submitComplaint() {
+            if (!this.form.controlNumber) {
+              this.form.controlNumber = generateControlNumber();
+            }
+            if (!this.form.unitType || !this.form.unitModel || !this.form.description || !this.form.category) {
+              this.showToast("error", "Please fill Unit Type, Unit Model, Category, and Description.");
+              return;
+            }
+            if (!window.CRM_API?.request) {
+              this.showToast("error", "API helper not loaded. Please refresh the page.");
+              return;
+            }
+            this.isSubmitting = true;
+            try {
+              const payload = this.buildComplaintPayload();
+              await window.CRM_API.request("/api/Complaints", {
+                method: "POST",
+                body: payload,
+              });
+              this.showToast("info", "Complaint submitted to CRM API.");
+              this.form.controlNumber = generateControlNumber();
+              this.modalOpen = true;
+            } catch (error) {
+              this.showToast("error", error?.message || "Failed to submit complaint.");
+              return;
+            } finally {
+              this.isSubmitting = false;
+            }
+          },
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
