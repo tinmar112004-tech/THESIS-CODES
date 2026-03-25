@@ -10,9 +10,7 @@
     tailwind.config = {
       theme: {
         extend: {
-          transitionProperty: {
-            'width': 'width',
-          },
+          transitionProperty: { 'width': 'width' },
           width: {
             'sidebar-collapsed': '64px',
             'sidebar-expanded': '240px',
@@ -46,21 +44,17 @@
 
         <!-- Home -->
         <div class="relative group">
-          <a href="#" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+          <a href="#" class="flex items-center gap-3 px-2.5 py-3 rounded-xl bg-white/15 transition-all duration-200 cursor-pointer">
             <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
-              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
               </svg>
             </div>
-            <span
-              :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
-              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
-            >Home</span>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white whitespace-nowrap transition-all duration-200 delay-100">Home</span>
           </a>
-          <!-- Tooltip -->
           <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-            Home
-            <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            Home<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
           </div>
         </div>
 
@@ -72,14 +66,11 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
               </svg>
             </div>
-            <span
-              :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
-              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
-            >Analytics</span>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Analytics</span>
           </a>
           <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-            Analytics
-            <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            Analytics<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
           </div>
         </div>
 
@@ -91,34 +82,28 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
             </div>
-            <span
-              :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
-              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
-            >Reports</span>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Reports</span>
           </a>
           <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-            Reports
-            <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            Reports<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
           </div>
         </div>
 
         <!-- Pending -->
         <div class="relative group">
-          <a href="pending page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+          <a href="logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
             <div class="w-9 h-9 flex items-center justify-center flex-shrink-0 relative">
               <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
               <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[9px] flex items-center justify-center font-bold text-white">3</span>
             </div>
-            <span
-              :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
-              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
-            >Pending</span>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Pending</span>
           </a>
           <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-            Pending
-            <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            Pending<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
           </div>
         </div>
 
@@ -133,14 +118,11 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
               </svg>
             </div>
-            <span
-              :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
-              class="text-sm font-medium text-white/50 group-hover:text-red-400 whitespace-nowrap transition-all duration-200 delay-100"
-            >Logout</span>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/50 group-hover:text-red-400 whitespace-nowrap transition-all duration-200 delay-100">Logout</span>
           </a>
           <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-            Logout
-            <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            Logout<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
           </div>
         </div>
       </div>
@@ -150,7 +132,7 @@
     <main class="flex-1 flex flex-col overflow-y-auto">
       <header class="bg-white px-8 py-4 shadow-sm flex justify-between items-center border-b border-gray-100">
         <div>
-          <h1 class="text-xl font-semibold text-[#0d2844]">Welcome Back, User </h1>
+          <h1 class="text-xl font-semibold text-[#0d2844]">Welcome Back, User</h1>
           <p class="text-xs text-gray-400 mt-0.5">Here's what's happening today</p>
         </div>
         <div class="flex items-center gap-3 bg-[#f0f6ff] px-4 py-2 rounded-full cursor-pointer hover:bg-[#dbeafe] transition">
@@ -160,6 +142,7 @@
       </header>
 
       <section class="p-6 md:p-8 flex-1 overflow-y-auto">
+
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
           <div v-for="card in statCards" :key="card.label"
@@ -176,9 +159,15 @@
         </div>
 
         <!-- Pending Reports Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
           <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-            <h3 class="text-sm font-semibold text-[#0d2844]">Pending Reports</h3>
+            <a href="logs.html?tab=pending" class="flex items-center gap-2 group/link">
+              <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span>
+              <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Pending Reports</h3>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
             <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
               <option>Last 7 days</option>
               <option>Last 30 days</option>
@@ -195,7 +184,10 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-50">
-                <tr v-for="report in reports" :key="report.date + report.type" class="hover:bg-blue-50/40 transition-colors">
+                <tr v-if="pendingReports.length === 0">
+                  <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No pending reports</td>
+                </tr>
+                <tr v-for="report in pendingReports" :key="report.date + report.type" class="hover:bg-yellow-50/40 transition-colors">
                   <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
                   <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
                   <td class="px-6 py-3.5">
@@ -209,6 +201,95 @@
             </table>
           </div>
         </div>
+
+        <!-- Resolved Reports Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+          <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+            <a href="logs.html?tab=resolved" class="flex items-center gap-2 group/link">
+              <span class="w-2.5 h-2.5 rounded-full bg-green-400 inline-block"></span>
+              <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Resolved Reports</h3>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last year</option>
+            </select>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                <tr v-if="resolvedReports.length === 0">
+                  <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No resolved reports</td>
+                </tr>
+                <tr v-for="report in resolvedReports" :key="report.date + report.type" class="hover:bg-green-50/40 transition-colors">
+                  <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
+                  <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
+                  <td class="px-6 py-3.5">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">
+                      <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>
+                      {{ report.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Approved Reports Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+          <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+            <a href="logs.html?tab=approved" class="flex items-center gap-2 group/link">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block"></span>
+              <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Approved Reports</h3>
+              <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+              <option>Last 7 days</option>
+              <option>Last 30 days</option>
+              <option>Last year</option>
+            </select>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                <tr v-if="approvedReports.length === 0">
+                  <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No approved reports</td>
+                </tr>
+                <tr v-for="report in approvedReports" :key="report.date + report.type" class="hover:bg-indigo-50/40 transition-colors">
+                  <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
+                  <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
+                  <td class="px-6 py-3.5">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block"></span>
+                      {{ report.status }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
       </section>
     </main>
 
@@ -222,29 +303,31 @@
           expanded: false,
           hoverTimer: null,
           statCards: [
-            { label: 'Pending',  value: 100000, icon: 'ⴵ', bg: 'bg-blue-50 text-blue-500' },
+            { label: 'Pending',  value: 100000, icon: '⏳', bg: 'bg-blue-50 text-blue-500' },
             { label: 'Resolved', value: 100000, icon: '✓',  bg: 'bg-green-50 text-green-500' },
             { label: 'Approved', value: 100000, icon: '✓',  bg: 'bg-indigo-50 text-indigo-500' },
           ],
-          reports: [
-            { date: '2026-02-18', type: 'Feedback',                status: 'Pending' },
+          pendingReports: [
+            { date: '2026-02-18', type: 'Feedback',                 status: 'Pending' },
             { date: '2026-02-20', type: 'Approval for Replacement', status: 'Pending' },
-            { date: '2026-02-22', type: 'Defective',               status: 'Pending' },
+            { date: '2026-02-22', type: 'Defective',                status: 'Pending' },
+          ],
+          resolvedReports: [
+            { date: '2026-02-10', type: 'Defective',                status: 'Resolved' },
+            { date: '2026-02-12', type: 'Feedback',                 status: 'Resolved' },
+            { date: '2026-02-15', type: 'Approval for Replacement', status: 'Resolved' },
+          ],
+          approvedReports: [
+            { date: '2026-02-08', type: 'Approval for Replacement', status: 'Approved' },
+            { date: '2026-02-11', type: 'Defective',                status: 'Approved' },
+            { date: '2026-02-14', type: 'Feedback',                 status: 'Approved' },
           ]
         };
       },
       methods: {
-        onMouseEnter() {
-          this.hoverTimer = setTimeout(() => { this.expanded = true; }, 600);
-        },
-        onMouseLeave() {
-          clearTimeout(this.hoverTimer);
-          this.expanded = false;
-        },
-        toggleSidebar() {
-          clearTimeout(this.hoverTimer);
-          this.expanded = !this.expanded;
-        }
+        onMouseEnter() { this.hoverTimer = setTimeout(() => { this.expanded = true; }, 600); },
+        onMouseLeave() { clearTimeout(this.hoverTimer); this.expanded = false; },
+        toggleSidebar() { clearTimeout(this.hoverTimer); this.expanded = !this.expanded; }
       }
     }).mount('#app');
   </script>
