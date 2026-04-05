@@ -6,6 +6,7 @@
   <title>Admin Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="api.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -90,20 +91,23 @@
           </div>
         </div>
 
-        <!-- Pending -->
+        <!-- Logs -->
         <div class="relative group">
-          <a href="logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+          <a href="admin logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
             <div class="w-9 h-9 flex items-center justify-center flex-shrink-0 relative">
               <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <span class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[9px] flex items-center justify-center font-bold text-white">3</span>
+              <span
+                v-if="complaintCount > 0"
+                class="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 bg-red-500 rounded-full text-[9px] flex items-center justify-center font-bold text-white"
+              >{{ complaintCount }}</span>
             </div>
             <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
-              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Pending</span>
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Logs</span>
           </a>
           <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-            Pending<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            Logs<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
           </div>
         </div>
 
@@ -158,136 +162,141 @@
           </div>
         </div>
 
-        <!-- Pending Reports Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-          <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-            <a href="logs.html?tab=pending" class="flex items-center gap-2 group/link">
-              <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span>
-              <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Pending Reports</h3>
-              <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
-              <option>Last 7 days</option>
-              <option>Last 30 days</option>
-              <option>Last year</option>
-            </select>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="min-w-full">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-50">
-                <tr v-if="pendingReports.length === 0">
-                  <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No pending reports</td>
-                </tr>
-                <tr v-for="report in pendingReports" :key="report.date + report.type" class="hover:bg-yellow-50/40 transition-colors">
-                  <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
-                  <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
-                  <td class="px-6 py-3.5">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
-                      <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 inline-block"></span>
-                      {{ report.status }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <!-- Reports (3-up layout like your screenshot) -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
-        <!-- Resolved Reports Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-          <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-            <a href="logs.html?tab=resolved" class="flex items-center gap-2 group/link">
-              <span class="w-2.5 h-2.5 rounded-full bg-green-400 inline-block"></span>
-              <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Resolved Reports</h3>
-              <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
-              <option>Last 7 days</option>
-              <option>Last 30 days</option>
-              <option>Last year</option>
-            </select>
+          <!-- Approved Reports Table -->
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+              <a href="admin logs.html?tab=approved" class="flex items-center gap-2 group/link">
+                <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block"></span>
+                <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Approved Reports</h3>
+                <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr v-if="approvedReports.length === 0">
+                    <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No approved reports</td>
+                  </tr>
+                  <tr v-for="report in approvedReports" :key="report.date + report.type" class="hover:bg-indigo-50/40 transition-colors">
+                    <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
+                    <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
+                    <td class="px-6 py-3.5">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block"></span>
+                        {{ report.status }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="overflow-x-auto">
-            <table class="min-w-full">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-50">
-                <tr v-if="resolvedReports.length === 0">
-                  <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No resolved reports</td>
-                </tr>
-                <tr v-for="report in resolvedReports" :key="report.date + report.type" class="hover:bg-green-50/40 transition-colors">
-                  <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
-                  <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
-                  <td class="px-6 py-3.5">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">
-                      <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>
-                      {{ report.status }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
 
-        <!-- Approved Reports Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-          <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-            <a href="logs.html?tab=approved" class="flex items-center gap-2 group/link">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-400 inline-block"></span>
-              <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Approved Reports</h3>
-              <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </a>
-            <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
-              <option>Last 7 days</option>
-              <option>Last 30 days</option>
-              <option>Last year</option>
-            </select>
+          <!-- Resolved Reports Table -->
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+              <a href="admin logs.html?tab=resolved" class="flex items-center gap-2 group/link">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-400 inline-block"></span>
+                <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Resolved Reports</h3>
+                <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr v-if="resolvedReports.length === 0">
+                    <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No resolved reports</td>
+                  </tr>
+                  <tr v-for="report in resolvedReports" :key="report.date + report.type" class="hover:bg-green-50/40 transition-colors">
+                    <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
+                    <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
+                    <td class="px-6 py-3.5">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>
+                        {{ report.status }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="overflow-x-auto">
-            <table class="min-w-full">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-50">
-                <tr v-if="approvedReports.length === 0">
-                  <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No approved reports</td>
-                </tr>
-                <tr v-for="report in approvedReports" :key="report.date + report.type" class="hover:bg-indigo-50/40 transition-colors">
-                  <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
-                  <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
-                  <td class="px-6 py-3.5">
-                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
-                      <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 inline-block"></span>
-                      {{ report.status }}
-                    </span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+          <!-- Pending Reports Table -->
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+              <a href="admin logs.html?tab=pending" class="flex items-center gap-2 group/link">
+                <span class="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span>
+                <h3 class="text-sm font-semibold text-[#0d2844] group-hover/link:underline underline-offset-2">Pending Reports</h3>
+                <svg class="w-3.5 h-3.5 text-gray-400 group-hover/link:text-[#0d2844] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+              </a>
+              <select class="border border-gray-200 rounded-lg px-3 py-1.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report Type</th>
+                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                  <tr v-if="pendingReports.length === 0">
+                    <td colspan="3" class="px-6 py-6 text-center text-sm text-gray-400">No pending reports</td>
+                  </tr>
+                  <tr v-for="report in pendingReports" :key="report.date + report.type" class="hover:bg-yellow-50/40 transition-colors">
+                    <td class="px-6 py-3.5 text-sm text-gray-500">{{ report.date }}</td>
+                    <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ report.type }}</td>
+                    <td class="px-6 py-3.5">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-700 border border-yellow-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 inline-block"></span>
+                        {{ report.status }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+
         </div>
 
       </section>
@@ -303,31 +312,79 @@
           expanded: false,
           hoverTimer: null,
           statCards: [
-            { label: 'Pending',  value: 100000, icon: '⏳', bg: 'bg-blue-50 text-blue-500' },
-            { label: 'Resolved', value: 100000, icon: '✓',  bg: 'bg-green-50 text-green-500' },
-            { label: 'Approved', value: 100000, icon: '✓',  bg: 'bg-indigo-50 text-indigo-500' },
+            { label: 'Pending',  value: 0, icon: '⏳', bg: 'bg-blue-50 text-blue-500' },
+            { label: 'Resolved', value: 0, icon: '✓',  bg: 'bg-green-50 text-green-500' },
+            { label: 'Approved', value: 0, icon: '✓',  bg: 'bg-indigo-50 text-indigo-500' },
           ],
-          pendingReports: [
-            { date: '2026-02-18', type: 'Feedback',                 status: 'Pending' },
-            { date: '2026-02-20', type: 'Approval for Replacement', status: 'Pending' },
-            { date: '2026-02-22', type: 'Defective',                status: 'Pending' },
-          ],
-          resolvedReports: [
-            { date: '2026-02-10', type: 'Defective',                status: 'Resolved' },
-            { date: '2026-02-12', type: 'Feedback',                 status: 'Resolved' },
-            { date: '2026-02-15', type: 'Approval for Replacement', status: 'Resolved' },
-          ],
-          approvedReports: [
-            { date: '2026-02-08', type: 'Approval for Replacement', status: 'Approved' },
-            { date: '2026-02-11', type: 'Defective',                status: 'Approved' },
-            { date: '2026-02-14', type: 'Feedback',                 status: 'Approved' },
-          ]
+          pendingReports: [],
+          resolvedReports: [],
+          approvedReports: [],
+          loading: false,
+          loadError: '',
         };
+      },
+      computed: {
+        complaintCount() {
+          // Red badge should show only when complaints need action (Pending + Resolved).
+          return (this.pendingReports?.length ?? 0) + (this.resolvedReports?.length ?? 0);
+        },
       },
       methods: {
         onMouseEnter() { this.hoverTimer = setTimeout(() => { this.expanded = true; }, 600); },
         onMouseLeave() { clearTimeout(this.hoverTimer); this.expanded = false; },
-        toggleSidebar() { clearTimeout(this.hoverTimer); this.expanded = !this.expanded; }
+        toggleSidebar() { clearTimeout(this.hoverTimer); this.expanded = !this.expanded; },
+
+        normalizeComplaint(raw) {
+          const obj = raw && typeof raw === 'object' ? raw : {};
+          const dateRaw = obj.createdAt ?? obj.created_at ?? obj.date ?? '';
+          const date = typeof dateRaw === 'string' ? dateRaw.slice(0, 10) : '';
+
+          const statusRaw = (obj.status ?? obj.complaintStatus ?? '').toString().toLowerCase();
+          const status =
+            statusRaw.includes('approve') ? 'Approved'
+            : statusRaw.includes('resolve') ? 'Resolved'
+            : 'Pending';
+
+          return {
+            id: obj.complaintId ?? obj.id ?? `${Math.random()}`,
+            date,
+            type: obj.complaintType ?? obj.complaintCategory ?? obj.type ?? 'Complaint',
+            status,
+            _raw: obj,
+          };
+        },
+
+        async loadComplaints() {
+          this.loading = true;
+          this.loadError = '';
+          try {
+            const data = await window.CRM_API.getComplaints();
+            const list = Array.isArray(data) ? data : (data?.items ?? data?.value ?? []);
+            const normalized = (Array.isArray(list) ? list : []).map(this.normalizeComplaint);
+
+            const pending = normalized.filter(x => x.status === 'Pending');
+            const resolved = normalized.filter(x => x.status === 'Resolved');
+            const approved = normalized.filter(x => x.status === 'Approved');
+
+            this.pendingReports = pending.map(x => ({ date: x.date, type: x.type, status: x.status, id: x.id }));
+            this.resolvedReports = resolved.map(x => ({ date: x.date, type: x.type, status: x.status, id: x.id }));
+            this.approvedReports = approved.map(x => ({ date: x.date, type: x.type, status: x.status, id: x.id }));
+
+            this.statCards = this.statCards.map(card => {
+              if (card.label === 'Pending') return { ...card, value: pending.length };
+              if (card.label === 'Resolved') return { ...card, value: resolved.length };
+              if (card.label === 'Approved') return { ...card, value: approved.length };
+              return card;
+            });
+          } catch (e) {
+            this.loadError = e?.message ?? 'Failed to load complaints';
+          } finally {
+            this.loading = false;
+          }
+        }
+      },
+      mounted() {
+        this.loadComplaints();
       }
     }).mount('#app');
   </script>
