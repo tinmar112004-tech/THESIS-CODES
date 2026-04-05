@@ -35,6 +35,7 @@
           >
         </div>
 
+        <!--  Home -->
         <nav class="flex-1 py-4 flex flex-col gap-0.5 px-2">
           <div class="relative group">
             <a
@@ -61,9 +62,10 @@
               <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
             </div>
           </div>
-
+          
+          <!--  Logs -->
           <div class="relative group">
-            <a href="logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <a href="service-agent logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
               <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
                 <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -83,33 +85,9 @@
               <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
             </div>
           </div>
-
-          <div class="relative group">
-            <a
-              href="complaintform.html"
-              class="flex items-center gap-3 px-2.5 py-3 rounded-xl bg-white/15 transition-all duration-200 cursor-pointer"
-            >
-              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
-                <svg class="w-5 h-5 text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-              </div>
-              <span
-                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
-                class="text-sm font-medium text-white whitespace-nowrap transition-all duration-200 delay-100"
-                >New Complaint</span
-              >
-            </a>
-            <div
-              v-if="!expanded"
-              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
-            >
-              New Complaint
-              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
-            </div>
-          </div>
         </nav>
 
+        <!-- Logout -->
         <div class="px-2 pb-4 border-t border-white/10 pt-3">
           <div class="relative group">
             <a href="loginpage.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 cursor-pointer">
@@ -136,13 +114,16 @@
         </div>
       </aside>
 
+      <!-- Main Content Area -->
       <main class="flex-1 flex flex-col overflow-y-auto">
         <section class="p-6 md:p-8 flex-1 overflow-y-auto">
-          <div class="mb-6">
-            <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#0d2844]">Complaint Form</h1>
-            <p class="text-sm text-gray-500 mt-1">Fill in the details to create a new complaint entry.</p>
-          </div>
-          <form @submit.prevent="submitComplaint" class="space-y-5">
+          <!-- FORM VIEW -->
+          <template v-if="!showSummary">
+            <div class="mb-6">
+              <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#0d2844]">Complaint Form</h1>
+              <p class="text-sm text-gray-500 mt-1">Fill in the details to create a new complaint entry.</p>
+            </div>
+            <form @submit.prevent="submitComplaint" class="space-y-5">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
               <div class="lg:col-span-2 space-y-5">
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
@@ -347,8 +328,392 @@
               </button>
             </div>
           </form>
+          </template>
+
+          <!-- SUMMARY/REVIEW VIEW -->
+          <template v-else>
+            <div class="mb-6">
+              <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#0d2844]">Complaint Summary Review</h1>
+              <p class="text-sm text-gray-500 mt-1">Please review all the information before final submission. You can edit any field if needed.</p>
+            </div>
+            <div class="space-y-5">
+              <!-- Retail Customer Information -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Retail Customer Information</h2>
+                  <button @click="editSection = 'customer'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Customer ID</p>
+                    <p class="text-gray-800 mt-1">{{ form.customerId || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Business Name</p>
+                    <p class="text-gray-800 mt-1">{{ form.businessName || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Contact Person</p>
+                    <p class="text-gray-800 mt-1">{{ form.contactPerson || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Contact Number</p>
+                    <p class="text-gray-800 mt-1">{{ form.contactNumber || '—' }}</p>
+                  </div>
+                  <div class="md:col-span-2">
+                    <p class="text-gray-500 font-medium">Email Address</p>
+                    <p class="text-gray-800 mt-1">{{ form.email || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unit / Appliance Information -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Unit / Appliance Information</h2>
+                  <button @click="editSection = 'unit'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Unit ID</p>
+                    <p class="text-gray-800 mt-1">{{ form.unitId || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Unit Model</p>
+                    <p class="text-gray-800 mt-1">{{ form.unitModel || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Unit Type</p>
+                    <p class="text-gray-800 mt-1">{{ form.unitType || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Serial Number</p>
+                    <p class="text-gray-800 mt-1">{{ form.serialNumber || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Installation Date</p>
+                    <p class="text-gray-800 mt-1">{{ form.installationDate || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Warranty Status</p>
+                    <p class="text-gray-800 mt-1">{{ form.warrantyStatus || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Complaint Details -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Complaint Details</h2>
+                  <button @click="editSection = 'complaint'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="space-y-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Complaint Category</p>
+                    <p class="text-gray-800 mt-1">{{ form.category || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Date Issue Occurred</p>
+                    <p class="text-gray-800 mt-1">{{ form.issueDate || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Complaint Description</p>
+                    <p class="text-gray-800 mt-1 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap">{{ form.description || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Complaint Control -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Complaint Control</h2>
+                  <button @click="editSection = 'control'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Control Number</p>
+                    <p class="text-gray-800 mt-1 font-mono bg-blue-50 px-3 py-2 rounded-lg">{{ form.controlNumber }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Date Reported</p>
+                    <p class="text-gray-800 mt-1">{{ form.dateReported || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Status</p>
+                    <p class="text-gray-800 mt-1">{{ form.status || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Priority</p>
+                    <p class="text-gray-800 mt-1">{{ form.priority || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Service Assignment -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Service Assignment</h2>
+                  <button @click="editSection = 'service'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Assigned Technician</p>
+                    <p class="text-gray-800 mt-1">{{ form.technician || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Service Department</p>
+                    <p class="text-gray-800 mt-1">{{ form.department || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Scheduled Service Date</p>
+                    <p class="text-gray-800 mt-1">{{ form.scheduledDate || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Estimated Resolution Time</p>
+                    <p class="text-gray-800 mt-1">{{ form.estimatedResolutionTime || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Resolution & Follow-up -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Resolution & Follow-up</h2>
+                  <button @click="editSection = 'resolution'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Resolution Status</p>
+                    <p class="text-gray-800 mt-1">{{ form.resolutionStatus || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Resolution Date</p>
+                    <p class="text-gray-800 mt-1">{{ form.resolutionDate || '—' }}</p>
+                  </div>
+                  <div class="md:col-span-2">
+                    <p class="text-gray-500 font-medium">Resolution Summary</p>
+                    <p class="text-gray-800 mt-1 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap">{{ form.resolutionSummary || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Follow-up Required</p>
+                    <p class="text-gray-800 mt-1">{{ form.followUpRequired || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary Page Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 justify-end mt-6">
+              <button 
+                @click="goBackToForm" 
+                class="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition">
+                Back to Edit
+              </button>
+              <button
+                @click="finalSubmitComplaint"
+                :disabled="isSubmitting"
+                class="px-5 py-2 rounded-xl bg-green-600 text-white text-sm font-medium hover:bg-green-700 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              >
+                {{ isSubmitting ? "Submitting..." : "Confirm & Submit" }}
+              </button>
+            </div>
+          </template>
         </section>
       </main>
+
+      <!-- EDIT MODAL -->
+      <div v-if="editSection" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 my-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-[#0d2844]">Edit {{ getSectionTitle(editSection) }}</h2>
+            <button @click="editSection = null" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="space-y-4 mb-6">
+            <!-- Customer Information Edit -->
+            <template v-if="editSection === 'customer'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Customer ID</label>
+                  <input v-model.trim="form.customerId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Business Name</label>
+                  <input v-model.trim="form.businessName" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Contact Person</label>
+                  <input v-model.trim="form.contactPerson" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Contact Number</label>
+                  <input v-model.trim="form.contactNumber" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Email Address</label>
+                  <input v-model.trim="form.email" type="email" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+              </div>
+            </template>
+
+            <!-- Unit Information Edit -->
+            <template v-if="editSection === 'unit'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Unit ID</label>
+                  <input v-model.trim="form.unitId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Unit Model</label>
+                  <input v-model.trim="form.unitModel" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Unit Type</label>
+                  <input v-model.trim="form.unitType" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Serial Number</label>
+                  <input v-model.trim="form.serialNumber" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Installation Date</label>
+                  <input v-model="form.installationDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Warranty Status</label>
+                  <select v-model="form.warrantyStatus" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Under Warranty</option>
+                    <option>Out of Warranty</option>
+                  </select>
+                </div>
+              </div>
+            </template>
+
+            <!-- Complaint Details Edit -->
+            <template v-if="editSection === 'complaint'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Complaint Category</label>
+                  <select v-model="form.category" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Mechanical</option>
+                    <option>Electrical</option>
+                    <option>Installation</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Date Issue Occurred</label>
+                  <input v-model="form.issueDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Complaint Description</label>
+                  <textarea v-model.trim="form.description" rows="4" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                </div>
+              </div>
+            </template>
+
+            <!-- Control Information Edit -->
+            <template v-if="editSection === 'control'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Date Reported</label>
+                  <input v-model="form.dateReported" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Status</label>
+                  <select v-model="form.status" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Pending</option>
+                    <option>Ongoing</option>
+                    <option>Resolved</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Priority</label>
+                  <select v-model="form.priority" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                  </select>
+                </div>
+              </div>
+            </template>
+
+            <!-- Service Assignment Edit -->
+            <template v-if="editSection === 'service'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Assigned Technician</label>
+                  <input v-model.trim="form.technician" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Service Department</label>
+                  <input v-model.trim="form.department" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Scheduled Service Date</label>
+                  <input v-model="form.scheduledDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Estimated Resolution Time</label>
+                  <input v-model.trim="form.estimatedResolutionTime" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+              </div>
+            </template>
+
+            <!-- Resolution & Follow-up Edit -->
+            <template v-if="editSection === 'resolution'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Resolution Status</label>
+                  <select v-model="form.resolutionStatus" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Pending</option>
+                    <option>Resolved</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Resolution Date</label>
+                  <input v-model="form.resolutionDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Resolution Summary</label>
+                  <textarea v-model.trim="form.resolutionSummary" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Follow-up Required</label>
+                  <select v-model="form.followUpRequired" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>No</option>
+                    <option>Yes</option>
+                  </select>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="flex gap-3 justify-end">
+            <button @click="editSection = null" class="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition">
+              Cancel
+            </button>
+            <button @click="editSection = null" class="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div v-if="modalOpen" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
@@ -422,6 +787,8 @@
             expanded: false,
             hoverTimer: null,
             showResolution: false,
+            showSummary: false,
+            editSection: null,
             modalOpen: false,
             isSubmitting: false,
             toast: { show: false, type: "info", message: "" },
@@ -492,15 +859,22 @@
             return null;
           },
           buildComplaintPayload() {
-            return {
+            const payload = {
               productType: this.form.unitType || "General",
               productModel: this.form.unitModel || "Unknown Model",
               complaintDets: this.form.description || "",
               complaintType: this.form.category || "General",
-              serialNumber: this.normalizeSerialNumber(this.form.serialNumber),
               status: this.form.status || "Pending",
               priority: this.form.priority === "High",
             };
+
+            // Only add serialNumber if it's a valid integer
+            const serialNumber = this.normalizeSerialNumber(this.form.serialNumber);
+            if (serialNumber !== null) {
+              payload.serialNumber = serialNumber;
+            }
+
+            return payload;
           },
           async submitComplaint() {
             if (!this.form.controlNumber) {
@@ -510,6 +884,25 @@
               this.showToast("error", "Please fill Unit Type, Unit Model, Category, and Description.");
               return;
             }
+            // Show the summary page instead of directly submitting
+            this.showSummary = true;
+          },
+          goBackToForm() {
+            this.showSummary = false;
+            this.editSection = null;
+          },
+          getSectionTitle(section) {
+            const titles = {
+              customer: "Retail Customer Information",
+              unit: "Unit / Appliance Information",
+              complaint: "Complaint Details",
+              control: "Complaint Control",
+              service: "Service Assignment",
+              resolution: "Resolution & Follow-up"
+            };
+            return titles[section] || "Information";
+          },
+          async finalSubmitComplaint() {
             if (!window.CRM_API?.request) {
               this.showToast("error", "API helper not loaded. Please refresh the page.");
               return;
@@ -523,6 +916,13 @@
               });
               this.showToast("info", "Complaint submitted to CRM API.");
               this.form.controlNumber = generateControlNumber();
+
+              // Signal the logs page to refresh (cross-page via localStorage).
+              const ts = String(Date.now());
+              localStorage.setItem("crm_last_complaint_submit_ts", ts);
+              window.dispatchEvent(new Event("crm:complaint-submitted"));
+
+              this.showSummary = false;
               this.modalOpen = true;
             } catch (error) {
               this.showToast("error", error?.message || "Failed to submit complaint.");
