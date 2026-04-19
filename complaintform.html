@@ -128,7 +128,7 @@
               <div class="lg:col-span-2 space-y-5">
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
                   <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-sm font-semibold text-[#0d2844]">Retail Customer Information</h2>
+                    <h2 class="text-sm font-semibold text-[#0d2844]">Retail Customer Information *</h2>
                     <button
                       type="button"
                       class="text-xs font-medium text-[#0d2844] bg-[#f0f6ff] hover:bg-[#dbeafe] px-3 py-1.5 rounded-lg transition"
@@ -140,41 +140,41 @@
 
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Customer ID</label>
+                      <label class="text-xs font-medium text-gray-500">Customer ID *</label>
                       <input v-model.trim="form.customerId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Business Name</label>
+                      <label class="text-xs font-medium text-gray-500">Business Name *</label>
                       <input v-model.trim="form.businessName" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Contact Person</label>
+                      <label class="text-xs font-medium text-gray-500">Contact Person *</label>
                       <input v-model.trim="form.contactPerson" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Contact Number</label>
+                      <label class="text-xs font-medium text-gray-500">Contact Number *</label>
                       <input v-model.trim="form.contactNumber" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div class="md:col-span-2">
-                      <label class="text-xs font-medium text-gray-500">Email Address</label>
+                      <label class="text-xs font-medium text-gray-500">Email Address *</label>
                       <input v-model.trim="form.email" type="email" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                   </div>
                 </div>
 
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Unit / Appliance Information</h2>
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Unit / Appliance Information *</h2>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Unit ID</label>
+                      <label class="text-xs font-medium text-gray-500">Unit ID *</label>
                       <input v-model.trim="form.unitId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Unit Model</label>
+                      <label class="text-xs font-medium text-gray-500">Unit Model *</label>
                       <input v-model.trim="form.unitModel" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Unit Type</label>
+                      <label class="text-xs font-medium text-gray-500">Unit Type *</label>
                       <input v-model.trim="form.unitType" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div>
@@ -199,7 +199,7 @@
                   <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Complaint Details</h2>
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Complaint Category</label>
+                      <label class="text-xs font-medium text-gray-500">Complaint Category *</label>
                       <select v-model="form.category" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
                         <option>Mechanical</option>
                         <option>Electrical</option>
@@ -207,11 +207,11 @@
                       </select>
                     </div>
                     <div>
-                      <label class="text-xs font-medium text-gray-500">Date Issue Occurred</label>
+                      <label class="text-xs font-medium text-gray-500">Date Issue Occurred *</label>
                       <input v-model="form.issueDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
                     </div>
                     <div class="md:col-span-2">
-                      <label class="text-xs font-medium text-gray-500">Complaint Description</label>
+                      <label class="text-xs font-medium text-gray-500">Complaint Description *</label>
                       <textarea v-model.trim="form.description" rows="4" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
                     </div>
                   </div>
