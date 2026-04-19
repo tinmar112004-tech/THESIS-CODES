@@ -25,9 +25,37 @@
       },
     };
   </script>
+  <style>
+    body {
+      background: radial-gradient(circle at top left, rgba(45, 106, 193, 0.22), transparent 30%),
+                  radial-gradient(circle at bottom right, rgba(16, 63, 136, 0.45), transparent 20%),
+                  linear-gradient(180deg, #0d2946 0%, #1a4a7a 42%, #275997 100%);
+      color: #0f3a66;
+    }
+
+    .login-glass {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      box-shadow: 0 30px 70px rgba(13, 42, 70, 0.24);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .login-hero {
+      background: linear-gradient(180deg, rgba(8, 46, 98, 0.88), rgba(18, 83, 150, 0.78));
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.24);
+    }
+
+    .login-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+    }
+  </style>
 </head>
 
-<body class="min-h-screen bg-pale font-brand text-deep">
+<body class="min-h-screen font-brand text-white">
 
   <!-- EVERYTHING is inside #app so Vue controls it all -->
   <div id="app">
@@ -48,88 +76,116 @@
         </div>
       </header>
 
-      <main class="flex flex-1 flex-col gap-8 lg:flex-row lg:items-start">
+      <main class="flex flex-1 flex-col gap-8 lg:flex-row lg:items-stretch">
 
-        <!-- Logo Section -->
-        <section class="flex flex-1 items-stretch lg:basis-3/4 lg:self-stretch">
-          <div
-            class="ml-[-40px] mt-[-70px] h-full min-h-[340px] w-full rounded-3xl bg-center bg-contain bg-no-repeat"
-            style="background-image: url('./gtc-logo-transparent.png');">
-            <span class="sr-only">GTC Aldis Philippines Inc. logo</span>
+        <!-- Hero Section -->
+        <section class="login-hero relative flex flex-1 flex-col justify-between overflow-hidden rounded-[2.5rem] p-10 text-white lg:basis-2/3">
+          <div class="absolute inset-0 opacity-70 bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.24),_transparent_30%)]"></div>
+          <div class="relative z-10 max-w-xl">
+            <span class="login-pill inline-flex rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-sky-100/90">Employee portal</span>
+            <h1 class="mt-8 text-4xl font-semibold leading-tight lg:text-5xl">Welcome back to the GTC Aldis CRM.</h1>
+            <p class="mt-6 max-w-xl text-base text-sky-100/80">Sign in to access dashboards, manage complaints, review reports, and keep service operations aligned with company standards.</p>
           </div>
         </section>
 
         <!-- Login Form -->
-        <section class="flex flex-col rounded-3xl border border-sky/40 bg-white/95 px-4 py-10 shadow-[0_20px_60px_rgba(63,111,180,0.15)] lg:w-[380px] lg:self-start mt-[-90px]">
-          <p class="text-xl font-semibold mb-8">Employee CRM Portal</p>
+        <section class="login-glass flex flex-col justify-between rounded-[2rem] border border-white/20 bg-white/95 px-8 py-10 shadow-[0_30px_80px_rgba(15,46,70,0.2)] lg:basis-[420px]">
+          <div>
+            <div class="mb-8">
+              <p class="text-2xl font-semibold text-slate-900">Employee CRM Portal</p>
+              <p class="mt-2 text-sm text-slate-600">Use your email address to log in.</p>
+            </div>
 
-          <div class="space-y-6">
-
-            <!-- Email -->
-            <label class="block text-sm">
-              <span class="text-xs uppercase tracking-[0.3em] text-tide">Company Email / Employee ID</span>
-              <div class="mt-2 rounded-2xl border border-tide/80 bg-cloud px-4 py-3 shadow-inner shadow-white">
+            <form @submit.prevent="handleSignIn" class="space-y-6">
+              <label class="block text-sm font-semibold text-slate-700">
+                Company Email / Employee ID
                 <input
                   type="text"
                   v-model="email"
-                  placeholder="name@gtcaldis.com"
-                  class="w-full border-none bg-transparent text-lg text-deep placeholder-deep/40 focus:outline-none"
+                  placeholder="name@gmail.com"
+                  class="mt-3 w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-lg text-slate-900 outline-none transition focus:border-sky-300 focus:ring-2 focus:ring-sky-100"
                 />
-              </div>
-            </label>
-
-            <!-- Password -->
-            <label class="block text-sm">
-              <span class="text-xs uppercase tracking-[0.3em] text-tide">Password</span>
-              <div class="mt-2 rounded-2xl border border-tide/80 bg-cloud px-4 py-3 shadow-inner shadow-white">
-                <div class="flex items-center gap-2">
-                  <input
-                    :type="showPassword ? 'text' : 'password'"
-                    v-model="password"
-                    placeholder="••••••••"
-                    class="flex-1 border-none bg-transparent text-lg font-semibold text-deep placeholder-deep/40 focus:outline-none"
-                  />
-                  <button type="button" @click="showPassword = !showPassword" class="text-tide text-2xl">
-                    {{ showPassword ? '⌣' : '👁' }}
-                  </button>
-                </div>
-              </div>
-            </label>
-
-            <!-- Remember & Forgot -->
-            <div class="flex items-center justify-between text-sm text-deep">
-              <label class="flex items-center gap-2">
-                <input type="checkbox" class="h-4 w-4 rounded border-sky/40 text-sky focus:ring-sky" />
-                <span>Remember this device</span>
               </label>
-              <button type="button" @click="openForgot" class="text-deep underline-offset-4 hover:underline">
-                Forgot Password
+
+              <label class="block text-sm font-semibold text-slate-700">
+                Password
+                <div class="mt-3 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3">
+                  <div class="flex items-center gap-3">
+                    <input
+                      :type="showPassword ? 'text' : 'password'"
+                      v-model="password"
+                      placeholder="••••••••"
+                      class="flex-1 border-none bg-transparent text-lg font-semibold text-slate-900 outline-none"
+                    />
+                    <button type="button" @click="showPassword = !showPassword" class="text-slate-500 text-2xl">
+                      {{ showPassword ? '⌣' : '👁' }}
+                    </button>
+                  </div>
+                </div>
+              </label>
+
+              <div class="flex items-center justify-between text-sm text-slate-600">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-sky-600 focus:ring-sky-500" />
+                  <span>Remember this device</span>
+                </label>
+                <button type="button" @click="openForgot" class="font-semibold text-sky-700 hover:text-sky-900">Forgot Password?</button>
+              </div>
+
+              <p v-if="errorMessage" class="rounded-3xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                {{ errorMessage }}
+              </p>
+
+              <button
+                type="submit"
+                class="w-full rounded-3xl bg-gradient-to-r from-[#1d5aa7] to-[#2f84dd] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#1a4a7a]/20 transition hover:shadow-[#1a4a7a]/30"
+              >
+                Sign In
               </button>
-            </div>
-
-            <!-- Sign In -->
-            <button
-              @click="handleSignIn"
-              class="w-full rounded-2xl bg-gradient-to-r from-sky to-tide px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-sky/40 transition hover:shadow-tide/40"
-            >
-              Sign In
-            </button>
-
+            </form>
           </div>
 
-          <div class="mt-6 rounded-2xl border border-dashed border-sky/30 bg-cloud/60 px-4 py-3 text-sm text-deep">
-            <p>Only authorized employees are permitted to access this system.</p>
+          <div class="mt-8 rounded-3xl border border-slate-200/70 bg-slate-50/80 px-4 py-4 text-sm text-slate-600">
+            <p class="font-medium text-slate-900">Authorized access only</p>
+            <p class="mt-1">Only authorized employees are permitted to access this system.</p>
           </div>
         </section>
 
       </main>
 
-      <!-- OTP Banner -->
-      <div v-if="showOtp" class="mt-6 flex items-center gap-3 rounded-3xl border border-sky/40 bg-white/80 px-6 py-5 text-sm text-deep shadow-lg">
-        <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky/10 text-2xl">🔒</div>
-        <div>
-          <p class="font-semibold">Verification required</p>
-          <p class="text-sky">A one-time verification code has been sent to your registered company email.</p>
+      <!-- OTP Modal -->
+      <div v-if="showOtp" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-3xl shadow-lg p-8 w-full max-w-md">
+          <div class="text-center mb-8">
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-sky/10 text-4xl mx-auto mb-4">🔒</div>
+            <h2 class="text-2xl font-bold text-deep mb-2">Verify Your Identity</h2>
+            <p class="text-gray-500 text-sm">Enter the 6-digit OTP code sent to your registered email</p>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">OTP Code</label>
+              <input
+                type="text"
+                v-model="otpCode"
+                placeholder="000000"
+                maxlength="6"
+                class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky focus:outline-none text-2xl text-center font-semibold tracking-widest bg-slate-50 text-slate-900"
+              />
+              <p v-if="otpError" class="mt-2 text-sm text-red-600">{{ otpError }}</p>
+            </div>
+
+            <button
+              @click="handleOtpVerification"
+              :disabled="otpVerifying"
+              class="w-full bg-gradient-to-r from-[#1d5aa7] to-[#2f84dd] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition disabled:opacity-50">
+              {{ otpVerifying ? 'Verifying...' : 'Verify OTP' }}
+            </button>
+
+            <p class="text-center text-xs text-gray-500 mt-4">
+              Didn't receive the code? <button type="button" @click="resendOtp" class="text-sky font-semibold hover:underline">Resend OTP</button>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -155,6 +211,7 @@
                 placeholder="you@example.com"
                 class="w-full px-4 py-2 border rounded-xl focus:ring-2 focus:ring-sky focus:outline-none text-sm"
               />
+              <p v-if="forgotError" class="mt-2 text-sm text-red-600">{{ forgotError }}</p>
             </div>
             <button
               @click="handleForgot"
@@ -190,27 +247,116 @@
           showOtp: false,
           showForgot: false,      // starts as FALSE — modal is hidden on load
           forgotEmail: '',
+          forgotError: '',
           forgotSubmitted: false,
+          errorMessage: '',
+          otpCode: '',
+          otpError: '',
+          otpVerifying: false,
+          currentUserRole: '',
+          currentUserRedirect: '',
         };
       },
       methods: {
         handleSignIn() {
+          this.errorMessage = '';
+          const email = this.email.trim().toLowerCase();
+          const password = this.password;
+
+          if (!email || !password) {
+            this.errorMessage = 'Please enter both company email and password.';
+            return;
+          }
+
+          const users = {
+            'admin@gmail.com': {
+              password: 'admin123',
+              role: 'admin',
+              redirect: 'admindashboardpage.html',
+            },
+            'agent@gmail.com': {
+              password: 'agent123',
+              role: 'agent',
+              redirect: 'service-agent dashboard page.html',
+            },
+          };
+
+          const user = users[email];
+          if (!user || user.password !== password) {
+            this.errorMessage = 'Email or password is incorrect. Please try again.';
+            return;
+          }
+
+          localStorage.setItem('crm_logged_in_user', JSON.stringify({
+            email,
+            role: user.role,
+            signedInAt: new Date().toISOString(),
+          }));
+
+          this.currentUserRole = user.role;
+          this.currentUserRedirect = user.redirect;
+          this.otpCode = '';
+          this.otpError = '';
           this.showOtp = true;
         },
         openForgot() {
           this.forgotEmail = '';
+          this.forgotError = '';
           this.forgotSubmitted = false;
-          this.showForgot = true;   // only set to true when button is clicked
+          this.showForgot = true;
         },
         closeForgot() {
           this.showForgot = false;
           this.forgotEmail = '';
+          this.forgotError = '';
           this.forgotSubmitted = false;
         },
         handleForgot() {
-          if (this.forgotEmail) {
-            this.forgotSubmitted = true;
+          this.forgotError = '';
+          const email = this.forgotEmail.trim();
+          if (!email) {
+            this.forgotError = 'Please enter your email address.';
+            return;
           }
+          this.forgotSubmitted = true;
+        },
+        handleOtpVerification() {
+          this.otpError = '';
+          const otp = this.otpCode.trim();
+          
+          if (!otp) {
+            this.otpError = 'Please enter the OTP code.';
+            return;
+          }
+          
+          if (otp.length !== 6) {
+            this.otpError = 'OTP must be 6 digits.';
+            return;
+          }
+          
+          // Simulate OTP verification (you can replace this with actual API call)
+          this.otpVerifying = true;
+          setTimeout(() => {
+            // Accept any 6-digit code for demo purposes
+            // In production, validate against backend
+            if (/^\d{6}$/.test(otp)) {
+              this.otpVerifying = false;
+              this.showOtp = false;
+              // Redirect to dashboard
+              setTimeout(() => {
+                window.location.href = this.currentUserRedirect;
+              }, 500);
+            } else {
+              this.otpVerifying = false;
+              this.otpError = 'Invalid OTP code. Please try again.';
+            }
+          }, 1500);
+        },
+        resendOtp() {
+          this.otpCode = '';
+          this.otpError = '';
+          // In production, call API to resend OTP
+          alert('OTP has been resent to your registered email address.');
         }
       }
     }).mount('#app');
