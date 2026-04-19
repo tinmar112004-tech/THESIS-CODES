@@ -78,6 +78,22 @@
           </div>
         </div>
 
+        <!-- Create Employee -->
+        <div class="relative group">
+          <a href="create employee page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Create Employee</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Create Employee<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
         <!-- Logs -->
         <div class="relative group">
           <a href="admin logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
@@ -120,27 +136,34 @@
     </aside>
 
     <!-- Main -->
-    <main class="flex-1 overflow-y-auto p-6">
-      <div class="max-w-[960px] mx-auto flex flex-col lg:flex-row gap-6">
+    <main class="flex-1 flex flex-col overflow-y-auto">
+      <header class="bg-white px-8 py-4 shadow-sm flex justify-between items-center border-b border-gray-100">
+        <div class="flex items-center gap-3">
+          <div>
+            <p class="text-lg font-semibold text-slate-900">Generate Reports</p>
+          </div>
+        </div>
+      </header>
 
-        <!-- Left Column -->
-        <div class="flex-1 min-w-0">
-          <h2 class="text-lg font-semibold text-[#0d2844] mb-4">Generate Reports</h2>
+      <div class="max-w-[1180px] mx-auto space-y-6">
+        <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Left Column -->
+          <div class="flex-1 min-w-0 pt-6 pr-6">
 
           <!-- Controls -->
-          <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
+          <section class="bg-white rounded-[28px] shadow-lg border border-gray-200/80 p-5 mb-5">
             <div class="flex flex-wrap gap-4 items-end">
               <div class="flex flex-col min-w-[150px]">
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">Start Date</label>
-                <input type="date" v-model="startDate" class="px-3 py-2 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Start Date</label>
+                <input type="date" v-model="startDate" class="px-3 py-2 border border-slate-200 rounded-2xl bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-sky-300" />
               </div>
               <div class="flex flex-col min-w-[150px]">
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">End Date</label>
-                <input type="date" v-model="endDate" class="px-3 py-2 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">End Date</label>
+                <input type="date" v-model="endDate" class="px-3 py-2 border border-slate-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
               </div>
               <div class="flex flex-col min-w-[180px]">
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide">Report Type</label>
-                <select v-model="selectedReport" class="px-3 py-2 border border-gray-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Report Type</label>
+                <select v-model="selectedReport" class="px-3 py-2 border border-slate-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
                   <option>Feedback</option>
                   <option>Approval for Replacement</option>
                   <option>Defective</option>
@@ -153,56 +176,50 @@
             </div>
           </section>
 
-          <section v-if="generated && selectedReport === 'Feedback'" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
+          <section v-if="generated && selectedReport === 'Feedback'" class="bg-white rounded-[28px] shadow-lg border border-gray-200/80 p-5 mb-5">
             <h3 class="text-sm font-semibold text-[#0d2844] mb-3">Feedback Report</h3>
-            <p class="text-sm text-gray-400">No data available for the selected date range.</p>
+            <p class="text-sm text-slate-500">No data available for the selected date range.</p>
           </section>
-          <section v-if="generated && selectedReport === 'Approval for Replacement'" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
+          <section v-if="generated && selectedReport === 'Approval for Replacement'" class="bg-white rounded-[28px] shadow-lg border border-gray-200/80 p-5 mb-5">
             <h3 class="text-sm font-semibold text-[#0d2844] mb-3">Approval for Replacement Report</h3>
-            <p class="text-sm text-gray-400">No data available for the selected date range.</p>
+            <p class="text-sm text-slate-500">No data available for the selected date range.</p>
           </section>
-          <section v-if="generated && selectedReport === 'Defective'" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-5">
+          <section v-if="generated && selectedReport === 'Defective'" class="bg-white rounded-[28px] shadow-lg border border-gray-200/80 p-5 mb-5">
             <h3 class="text-sm font-semibold text-[#0d2844] mb-3">Defective Report</h3>
-            <p class="text-sm text-gray-400">No data available for the selected date range.</p>
+            <p class="text-sm text-slate-500">No data available for the selected date range.</p>
           </section>
         </div>
 
         <!-- Right Column -->
-        <div class="w-full lg:w-[320px] flex-shrink-0">
-          <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+        <div class="w-full lg:w-[320px] flex-shrink-0 pt-6">
+          <div class="bg-white rounded-[28px] shadow-lg border border-gray-200/80 p-5">
             <h3 class="text-sm font-semibold text-[#0d2844] mb-4">Report Filtering</h3>
             <div class="flex flex-col gap-3">
               <div>
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide block">Product Group</label>
-                <select v-model="filters.productGroup" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide block">Product Group</label>
+                <select v-model="filters.productGroup" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
                   <option>Select Product Group</option>
                 </select>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide block">Product Type</label>
-                <select v-model="filters.productType" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
-                  <option>Select Product Type</option>
-                </select>
-              </div>
-              <div>
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide block">Model</label>
-                <select v-model="filters.model" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide block">Model</label>
+                <select v-model="filters.model" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
                   <option>Select Model</option>
                 </select>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide block">Authorised Service Center</label>
-                <select v-model="filters.asc" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide block">Authorised Service Center</label>
+                <select v-model="filters.asc" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
                   <option>Select ASC...</option>
                 </select>
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide block">Start Call Date</label>
-                <input type="date" v-model="filters.startCallDate" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide block">Start Call Date</label>
+                <input type="date" v-model="filters.startCallDate" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
               </div>
               <div>
-                <label class="text-xs font-medium text-gray-500 mb-1.5 uppercase tracking-wide block">End Call Date</label>
-                <input type="date" v-model="filters.endCallDate" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide block">End Call Date</label>
+                <input type="date" v-model="filters.endCallDate" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
               </div>
             </div>
             <button class="mt-5 w-full bg-[#0d2844] text-white py-2.5 rounded-xl text-sm font-medium hover:bg-[#0a1f38] hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200">PRINT</button>
