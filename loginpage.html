@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="api.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -258,46 +259,41 @@
         };
       },
       methods: {
-        handleSignIn() {
+        async handleSignIn() {
           this.errorMessage = '';
           const email = this.email.trim().toLowerCase();
           const password = this.password;
 
           if (!email || !password) {
-            this.errorMessage = 'Please enter both company email and password.';
+            this.errorMessage = 'Please enter both email and password.';
             return;
           }
 
-          const users = {
-            'admin@gmail.com': {
-              password: 'admin123',
-              role: 'admin',
-              redirect: 'admindashboardpage.html',
-            },
-            'agent@gmail.com': {
-              password: 'agent123',
-              role: 'agent',
-              redirect: 'service-agent dashboard page.html',
-            },
+          try {
+            const response = await window.CRM_API.login(email, password);
+            
+            localStorage.setItem('crm_logged_in_user', JSON.stringify({
+              email,
+              role: response.role || 'user',
+              token: response.token,
+              signedInAt: new Date().toISOString(),
+            }));
+
+            this.currentUserRole = response.role || 'user';
+            this.currentUserRedirect = response.redirect || this.getRoleRedirect(response.role);
+            this.otpCode = '';
+            this.otpError = '';
+            this.showOtp = true;
+          } catch (error) {
+            this.errorMessage = error?.message || 'Login failed. Please check your credentials.';
+          }
+        },
+        getRoleRedirect(role) {
+          const roleMap = {
+            'admin': 'admindashboardpage.html',
+            'agent': 'service-agent dashboard page.html',
           };
-
-          const user = users[email];
-          if (!user || user.password !== password) {
-            this.errorMessage = 'Email or password is incorrect. Please try again.';
-            return;
-          }
-
-          localStorage.setItem('crm_logged_in_user', JSON.stringify({
-            email,
-            role: user.role,
-            signedInAt: new Date().toISOString(),
-          }));
-
-          this.currentUserRole = user.role;
-          this.currentUserRedirect = user.redirect;
-          this.otpCode = '';
-          this.otpError = '';
-          this.showOtp = true;
+          return roleMap[role] || 'admindashboardpage.html';
         },
         openForgot() {
           this.forgotEmail = '';
@@ -320,7 +316,7 @@
           }
           this.forgotSubmitted = true;
         },
-        handleOtpVerification() {
+        async handleOtpVerification() {
           this.otpError = '';
           const otp = this.otpCode.trim();
           
@@ -333,24 +329,25 @@
             this.otpError = 'OTP must be 6 digits.';
             return;
           }
-          
-          // Simulate OTP verification (you can replace this with actual API call)
+
+          if (!/^\d{6}$/.test(otp)) {
+            this.otpError = 'OTP must contain only numbers.';
+            return;
+          }
+
           this.otpVerifying = true;
-          setTimeout(() => {
-            // Accept any 6-digit code for demo purposes
-            // In production, validate against backend
-            if (/^\d{6}$/.test(otp)) {
-              this.otpVerifying = false;
-              this.showOtp = false;
-              // Redirect to dashboard
-              setTimeout(() => {
-                window.location.href = this.currentUserRedirect;
-              }, 500);
-            } else {
-              this.otpVerifying = false;
-              this.otpError = 'Invalid OTP code. Please try again.';
-            }
-          }, 1500);
+          try {
+            const response = await window.CRM_API.verifyOtp(this.email.trim().toLowerCase(), otp);
+            this.otpVerifying = false;
+            this.showOtp = false;
+            // Redirect to dashboard
+            setTimeout(() => {
+              window.location.href = this.currentUserRedirect;
+            }, 500);
+          } catch (error) {
+            this.otpVerifying = false;
+            this.otpError = error?.message || 'Invalid OTP code. Please try again.';
+          }
         },
         resendOtp() {
           this.otpCode = '';
