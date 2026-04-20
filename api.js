@@ -54,7 +54,31 @@
   window.CRM_API = {
     request,
     getComplaints() {
-      return request("/api/Complaints");
+      // New backend route exposes list on /api/Complaints/all.
+      // Keep fallback to older route names for compatibility.
+      return request("/api/Complaints/all").catch(async (firstErr) => {
+        try {
+          return await request("/api/Complaints");
+        } catch (_) {
+          try {
+            return await request("/api/complaints/all");
+          } catch (_) {
+            throw firstErr;
+          }
+        }
+      });
+    },
+    login(email, password) {
+      return request("/api/Auth/login", {
+        method: "POST",
+        body: { email, password },
+      });
+    },
+    verifyOtp(email, otp) {
+      return request("/api/Auth/verify-otp", {
+        method: "POST",
+        body: { email, otp },
+      });
     },
   };
 })();
