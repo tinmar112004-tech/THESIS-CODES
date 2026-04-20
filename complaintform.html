@@ -860,12 +860,16 @@
           },
           buildComplaintPayload() {
             const payload = {
+              // Required by backend DTO
+              barangay: this.form.department || this.form.businessName || "Unspecified",
+              itemName: this.form.unitId || this.form.unitModel || "Unspecified Item",
               productType: this.form.unitType || "General",
               productModel: this.form.unitModel || "Unknown Model",
               complaintDets: this.form.description || "",
               complaintType: this.form.category || "General",
               status: this.form.status || "Pending",
               priority: this.form.priority === "High",
+              defective: true,
             };
 
             // Only add serialNumber if it's a valid integer
