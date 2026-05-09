@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRM – Analytics Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    window.CRM_API_USE_NGROK_SKIP_HEADER = true;
+  </script>
+  <script src="../api.js"></script>
+  <style>
+    [v-cloak] { display: none; }
+    .grid-line {
+      border-top: 1px dashed #bfdbfe;
+    }
+  </style>
+</head>
+
+<body class="font-sans bg-[#f0f4f8] text-[#1a5276]">
+  <div id="app" class="flex h-screen overflow-hidden" v-cloak>
+
+    <!-- Sidebar -->
+    <aside
+      :class="expanded ? 'w-60' : 'w-16'"
+      class="flex-shrink-0 bg-gradient-to-b from-[#0d2844] to-[#1a4a7a] text-white flex flex-col shadow-2xl overflow-hidden transition-all duration-300 ease-in-out"
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
+    >
+      <div class="flex items-center gap-3 px-3.5 py-5 border-b border-white/10 min-h-[72px] cursor-pointer flex-shrink-0" @click="toggleSidebar">
+        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20 overflow-hidden">
+          <img src="../asset/hyundai-appliances-logo.jpg" alt="logo" class="w-full h-full object-cover"
+            onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=&quot;color:white;font-weight:700;font-size:16px&quot;>A</span>'">
+        </div>
+      </div>
+
+      <nav class="flex-1 py-4 flex flex-col gap-0.5 px-2">
+
+        <!-- Home -->
+        <div class="relative group">
+          <a href="managerdashboardpage.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Home</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Home<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Analytics (active) -->
+        <div class="relative group">
+          <a href="analytics_page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl bg-white/15 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white whitespace-nowrap transition-all duration-200 delay-100">Analytics</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Analytics<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Reports -->
+        <div class="relative group">
+          <a href="generatereportspage.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Reports</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Reports<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Logs -->
+        <div class="relative group">
+          <a href="manager logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0 relative">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span v-if="complaintCount > 0"
+                class="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 bg-red-500 rounded-full text-[9px] flex items-center justify-center font-bold text-white">
+                {{ complaintCount }}
+              </span>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Logs</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Logs<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+      </nav>
+
+      <!-- Logout -->
+      <div class="px-2 pb-4 border-t border-white/10 pt-3">
+        <div class="relative group">
+          <a href="loginpage.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/50 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/50 group-hover:text-red-400 whitespace-nowrap transition-all duration-200 delay-100">Logout</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Logout<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+
+      <!-- Header -->
+      <header class="bg-white px-8 py-4 shadow-sm flex justify-between items-center border-b border-gray-100 sticky top-0 z-10">
+        <div class="flex items-center gap-3">
+          <div>
+            <p class="text-lg font-semibold text-slate-900">Analytics</p>
+            <p class="text-xs text-gray-400 mt-0.5">Defective Unit Analytics</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="px-8 py-6">
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+          <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-red-500 hover:-translate-y-1 hover:shadow-md transition-all duration-200">
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Total Defective Units</p>
+            <p class="text-3xl font-bold text-[#0d2844] mt-2">{{ totalDefectiveUnits }}</p>
+            <p class="text-xs text-gray-400 mt-1">Grouped by: <span class="font-medium text-[#0d2844]">{{ groupByLabel }}</span></p>
+          </div>
+          <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-orange-400 hover:-translate-y-1 hover:shadow-md transition-all duration-200">
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Top Group</p>
+            <p class="text-3xl font-bold text-[#0d2844] mt-2 truncate">{{ topGroup.label || '—' }}</p>
+            <p class="text-xs text-gray-400 mt-1">{{ topGroup.count ?? 0 }} unit(s) reported</p>
+          </div>
+          <div class="bg-white p-5 rounded-2xl shadow-sm border-l-4 border-blue-500 hover:-translate-y-1 hover:shadow-md transition-all duration-200">
+            <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Groups Found</p>
+            <p class="text-3xl font-bold text-[#0d2844] mt-2">{{ analyticsData.length }}</p>
+            <p class="text-xs text-gray-400 mt-1">Distinct {{ groupByLabel }} values</p>
+          </div>
+        </div>
+
+        <!-- Error Banner -->
+        <div v-if="loadError" class="mb-4 px-4 py-3 rounded-xl border border-red-200 bg-red-50 text-red-700 text-sm">
+          {{ loadError }}
+        </div>
+
+        <!-- Filter Section -->
+        <div class="bg-white p-4 rounded-2xl flex flex-wrap items-end gap-4 mb-6 shadow-sm border border-gray-100">
+          <div class="flex flex-col">
+            <label class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Group By</label>
+            <select v-model="filters.groupBy" class="px-3 py-1.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+              <option value="Barangay">Barangay</option>
+              <option value="City">City</option>
+              <option value="Province">Province</option>
+              <option value="Region">Region</option>
+              <option value="ProductName">Product Name</option>
+              <option value="ProductModel">Product Model</option>
+              <option value="ProductType">Product Type</option>
+              <option value="Issue">Issue Type</option>
+            </select>
+          </div>
+          <div class="flex flex-col">
+            <label class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Barangay</label>
+            <input type="text" v-model="filters.barangay" placeholder="e.g. Poblacion"
+              class="px-3 py-1.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 w-36" />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Product Type</label>
+            <input type="text" v-model="filters.productType" placeholder="e.g. Refrigerator"
+              class="px-3 py-1.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 w-36" />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Issue Type</label>
+            <input type="text" v-model="filters.issueType" placeholder="e.g. Noise"
+              class="px-3 py-1.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 w-36" />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">Start Date</label>
+            <input type="date" v-model="filters.start"
+              class="px-3 py-1.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          </div>
+          <div class="flex flex-col">
+            <label class="text-xs font-medium text-gray-400 mb-1 uppercase tracking-wide">End Date</label>
+            <input type="date" v-model="filters.end"
+              class="px-3 py-1.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+          </div>
+          <button @click="applyFilter"
+            :disabled="loading"
+            class="px-4 py-2 bg-[#0d2844] text-white rounded-xl text-sm font-medium hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2">
+            <svg v-if="loading" class="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+            </svg>
+            {{ loading ? 'Loading…' : 'Apply Filter' }}
+          </button>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="bg-white p-5 rounded-2xl mb-6 shadow-sm border border-gray-100">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-sm font-semibold text-[#0d2844]">Defective Units by {{ groupByLabel }}</h3>
+            <span class="text-xs text-gray-400">{{ analyticsData.length }} group(s)</span>
+          </div>
+
+          <!-- Loading -->
+          <div v-if="loading" class="h-72 bg-gray-50 rounded-xl border border-gray-200 flex items-center justify-center text-gray-400 text-sm">
+            Loading analytics data…
+          </div>
+
+          <!-- Empty -->
+          <div v-else-if="analyticsData.length === 0" class="h-72 bg-gray-50 rounded-xl border border-gray-200 flex flex-col items-center justify-center gap-2 text-gray-400">
+            <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+            <span class="text-sm">No data available for the selected filters</span>
+          </div>
+
+          <!-- Chart with Y-axis and grid lines -->
+          <div v-else class="flex h-80">
+            <!-- Y-axis labels -->
+            <div class="flex flex-col justify-between text-[10px] font-bold text-blue-600 pr-2 pb-8 pt-2 shrink-0">
+              <span>{{ yAxisMax }}</span>
+              <span>{{ Math.round(yAxisMax * 0.8) }}</span>
+              <span>{{ Math.round(yAxisMax * 0.6) }}</span>
+              <span>{{ Math.round(yAxisMax * 0.4) }}</span>
+              <span>{{ Math.round(yAxisMax * 0.2) }}</span>
+              <span>0</span>
+            </div>
+
+            <!-- Chart area -->
+            <div class="flex-1 relative bg-gray-50 rounded-xl border border-gray-100 p-4 flex flex-col overflow-hidden">
+              <!-- Grid lines -->
+              <div class="absolute inset-0 flex flex-col justify-between px-4 pb-12 pt-6 pointer-events-none">
+                <div v-for="i in 5" :key="i" class="grid-line w-full h-0"></div>
+              </div>
+              <!-- Scrollable bars -->
+              <div class="flex-1 h-full overflow-x-auto relative z-10">
+                <div class="h-full flex items-end gap-4 min-w-max border-b-2 border-purple-400 pb-2">
+                  <div
+                    v-for="(item, idx) in chartBars"
+                    :key="item.label"
+                    class="group relative flex flex-col items-center justify-end h-full"
+                    style="min-width: 80px;"
+                  >
+                    <p class="text-[10px] font-bold text-[#0d2844] mb-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {{ item.count }}
+                    </p>
+                    <div
+                      class="w-full max-w-[40px] border border-black transition-all duration-700 ease-out hover:brightness-90 cursor-help"
+                      :class="barColor(idx)"
+                      :style="{ height: item.height + '%', minHeight: item.count > 0 ? '8px' : '3px' }"
+                      :title="`${item.label}: ${item.count}`"
+                    ></div>
+                    <p class="mt-2 text-[11px] text-blue-700 italic font-medium text-center leading-tight max-w-[70px] truncate" :title="item.label">
+                      {{ item.label }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+          <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 class="text-sm font-semibold text-[#0d2844]">Defective Units Breakdown</h3>
+            <span class="text-xs text-gray-400">{{ analyticsData.length }} record(s)</span>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">#</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ groupByLabel }}</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Defective Count</th>
+                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Share</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-50">
+                <tr v-if="analyticsData.length === 0 && !loading">
+                  <td colspan="4" class="px-6 py-3.5 text-sm text-gray-500 text-center">No records found</td>
+                </tr>
+                <tr v-for="(row, idx) in analyticsData" :key="row.label" class="hover:bg-blue-50/40 transition-colors">
+                  <td class="px-6 py-3.5 text-sm text-gray-400">{{ idx + 1 }}</td>
+                  <td class="px-6 py-3.5 text-sm text-gray-700 font-medium">{{ row.label || '—' }}</td>
+                  <td class="px-6 py-3.5 text-sm font-semibold text-[#0d2844]">{{ row.count }}</td>
+                  <td class="px-6 py-3.5">
+                    <div class="flex items-center gap-2">
+                      <div class="flex-1 bg-gray-100 rounded-full h-1.5 max-w-[120px]">
+                        <div
+                          class="h-1.5 rounded-full bg-red-400 transition-all duration-300"
+                          :style="{ width: sharePercent(row.count) + '%' }">
+                        </div>
+                      </div>
+                      <span class="text-xs text-gray-500 w-10 text-right">{{ sharePercent(row.count) }}%</span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    const BAR_COLORS = [
+      'bg-[#c0eb75]',
+      'bg-[#a9c7e9]',
+      'bg-[#e2a069]',
+      'bg-[#9b86a3]',
+      'bg-[#fff491]',
+      'bg-red-400',
+      'bg-orange-400',
+      'bg-amber-400',
+      'bg-indigo-400',
+      'bg-teal-400',
+      'bg-cyan-400',
+      'bg-rose-400',
+    ];
+
+    createApp({
+      data() {
+        return {
+          expanded: false,
+          hoverTimer: null,
+          loading: false,
+          loadError: '',
+          totalDefectiveUnits: 0,
+          analyticsData: [],
+          complaintCount: 0,
+          filters: {
+            groupBy: 'Barangay',
+            barangay: '',
+            productType: '',
+            issueType: '',
+            start: '',
+            end: '',
+          },
+        };
+      },
+      computed: {
+        groupByLabel() {
+          const map = {
+            Barangay: 'Barangay', City: 'City', Province: 'Province', Region: 'Region',
+            ProductName: 'Product Name', ProductModel: 'Product Model',
+            ProductType: 'Product Type', Issue: 'Issue Type',
+          };
+          return map[this.filters.groupBy] || this.filters.groupBy;
+        },
+        topGroup() {
+          if (!this.analyticsData.length) return {};
+          return { label: this.analyticsData[0].label, count: this.analyticsData[0].count };
+        },
+        yAxisMax() {
+          const max = Math.max(...this.analyticsData.map(d => d.count), 1);
+          return Math.ceil(max / 5) * 5 || 10;
+        },
+        chartBars() {
+          return this.analyticsData.map(item => ({
+            label: item.label || '—',
+            count: item.count,
+            height: Math.max((item.count / this.yAxisMax) * 100, item.count > 0 ? 5 : 2),
+          }));
+        },
+      },
+      methods: {
+        onMouseEnter() { this.hoverTimer = setTimeout(() => { this.expanded = true; }, 600); },
+        onMouseLeave() { clearTimeout(this.hoverTimer); this.expanded = false; },
+        toggleSidebar() { clearTimeout(this.hoverTimer); this.expanded = !this.expanded; },
+        barColor(idx) { return BAR_COLORS[idx % BAR_COLORS.length]; },
+        sharePercent(count) {
+          if (!this.totalDefectiveUnits) return 0;
+          return Math.round((count / this.totalDefectiveUnits) * 100);
+        },
+        buildQueryString() {
+          const params = new URLSearchParams();
+          params.set('groupBy', this.filters.groupBy);
+          if (this.filters.barangay)    params.set('barangay',    this.filters.barangay);
+          if (this.filters.productType) params.set('productType', this.filters.productType);
+          if (this.filters.issueType)   params.set('issueType',   this.filters.issueType);
+          if (this.filters.start)       params.set('start',       this.filters.start);
+          if (this.filters.end)         params.set('end',         this.filters.end);
+          return params.toString();
+        },
+        async applyFilter() { await this.loadAnalytics(); },
+        async loadAnalytics() {
+          this.loading = true;
+          this.loadError = '';
+          try {
+            const qs = this.buildQueryString();
+            const response = await window.CRM_API.request(`/api/DefectiveUnits/analytics/defective?${qs}`);
+            this.totalDefectiveUnits = response?.totalDefectiveUnits ?? response?.TotalDefectiveUnits ?? 0;
+            this.analyticsData       = response?.data              ?? response?.Data              ?? [];
+          } catch (e) {
+            this.loadError = `Failed to load analytics: ${e?.message ?? 'Unknown error'}`;
+            this.analyticsData = [];
+            this.totalDefectiveUnits = 0;
+          } finally {
+            this.loading = false;
+          }
+        },
+        async loadComplaintCount() {
+          try {
+            const data = await window.CRM_API.getComplaints();
+            const list = window.CRM_API.extractList(data);
+            const pending  = list.filter(x => {
+              const s = (x.status ?? x.complaintStatus ?? '').toString().toLowerCase();
+              return !s.includes('approve') && !s.includes('resolve');
+            });
+            const resolved = list.filter(x => {
+              const s = (x.status ?? x.complaintStatus ?? '').toString().toLowerCase();
+              return s.includes('resolve');
+            });
+            this.complaintCount = pending.length + resolved.length;
+          } catch (_) {}
+        },
+      },
+      mounted() {
+        this.loadAnalytics();
+        this.loadComplaintCount();
+      },
+    }).mount('#app');
+  </script>
+</body>
+</html>

@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Complaint Entry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        window.CRM_API_USE_NGROK_SKIP_HEADER = true;
+    </script>
+    <script src="../api.js"></script>
+  </head>
+
+  <body class="font-sans bg-[#f0f4f8] text-[#1a5276]">
+    <div id="app" class="flex h-screen overflow-hidden">
+      <aside
+        :class="expanded ? 'w-60' : 'w-16'"
+        class="flex-shrink-0 bg-gradient-to-b from-[#0d2844] to-[#1a4a7a] text-white flex flex-col shadow-2xl overflow-hidden transition-all duration-300 ease-in-out"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
+      >
+        <div
+          class="flex items-center gap-3 px-3.5 py-5 border-b border-white/10 min-h-[72px] cursor-pointer flex-shrink-0"
+          @click="toggleSidebar"
+        >
+          <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20 overflow-hidden">
+            <img
+              src="../asset/hyundai-appliances-logo.jpg"
+              alt="logo"
+              class="w-full h-full object-cover"
+              onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=&quot;color:white;font-weight:700;font-size:16px&quot;>C</span>'"
+            />
+          </div>
+          <span
+            :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+            class="text-sm font-semibold tracking-wide text-white/90 leading-tight whitespace-nowrap transition-all duration-200 delay-100"
+            >Service Agent<br />Dashboard</span
+          >
+        </div>
+
+        <!--  Home -->
+        <nav class="flex-1 py-4 flex flex-col gap-0.5 px-2">
+          <div class="relative group">
+            <a
+              href="service-agent dashboard page.html"
+              class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer"
+            >
+              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+              </div>
+              <span
+                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+                class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
+                >Home</span
+              >
+            </a>
+            <div
+              v-if="!expanded"
+              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
+            >
+              Home
+              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            </div>
+          </div>
+          
+          <!--  Logs -->
+          <div class="relative group">
+            <a href="service-agent logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span
+                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+                class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100"
+                >Logs</span
+              >
+            </a>
+            <div
+              v-if="!expanded"
+              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
+            >
+              Logs
+              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            </div>
+          </div>
+        </nav>
+
+        <!-- Logout -->
+        <div class="px-2 pb-4 border-t border-white/10 pt-3">
+          <div class="relative group">
+            <a href="loginpage.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 cursor-pointer">
+              <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-white/50 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </div>
+              <span
+                :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+                class="text-sm font-medium text-white/50 group-hover:text-red-400 whitespace-nowrap transition-all duration-200 delay-100"
+                >Logout</span
+              >
+            </a>
+            <div
+              v-if="!expanded"
+              class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50"
+            >
+              Logout
+              <div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="flex-1 flex flex-col overflow-y-auto">
+        <section class="p-6 md:p-8 flex-1 overflow-y-auto">
+          <!-- FORM VIEW -->
+          <template v-if="!showSummary">
+            <div class="mb-6">
+              <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#0d2844]">Complaint Form</h1>
+              <p class="text-sm text-gray-500 mt-1">Fill in the details to create a new complaint entry.</p>
+            </div>
+            <form @submit.prevent="submitComplaint" class="space-y-5">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+              <div class="lg:col-span-2 space-y-5">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold text-[#0d2844]">Retail Customer Information *</h2>
+                    <button
+                      type="button"
+                      class="text-xs font-medium text-[#0d2844] bg-[#f0f6ff] hover:bg-[#dbeafe] px-3 py-1.5 rounded-lg transition"
+                      @click="toastInfo('Search is not connected yet')"
+                    >
+                      Search Customer
+                    </button>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                      <label class="text-xs font-medium text-gray-500">Customer Type *</label>
+                      <select id="customerType" v-model="form.customerType" required class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option value="Retailer">Retailer</option>
+                        <option value="Regular">Regular</option>
+                      </select>
+                    </div>
+                    <div v-if="form.customerType === 'Retailer'">
+                      <label class="text-xs font-medium text-gray-500">Customer Number *</label>
+                      <input id="customerId" v-model.trim="form.customerId" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div v-if="form.customerType === 'Regular'">
+                      <label class="text-xs font-medium text-gray-500">Contact Person *</label>
+                      <input id="contactPerson" v-model.trim="form.contactPerson" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div v-if="form.customerType === 'Regular'">
+                      <label class="text-xs font-medium text-gray-500">Contact Number *</label>
+                      <input id="contactNumber" v-model.trim="form.contactNumber" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div v-if="form.customerType === 'Regular'" class="md:col-span-2">
+                      <label class="text-xs font-medium text-gray-500">Address Line 1 *</label>
+                      <input id="addressLine1" v-model.trim="form.addressLine1" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div v-if="form.customerType === 'Regular'">
+                      <label class="text-xs font-medium text-gray-500">Barangay *</label>
+                      <select id="barangay" v-model.number="form.barangay" required class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option disabled value="">Select barangay</option>
+                        <option :value="1">San Roque</option>
+                        <option :value="2">Barangay 2</option>
+                      </select>
+                    </div>
+                    <div v-if="form.customerType === 'Regular'">
+                      <label class="text-xs font-medium text-gray-500">City *</label>
+                      <select id="city" v-model.number="form.city" required class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option disabled value="">Select city</option>
+                        <option :value="1">Quezon City</option>
+                      </select>
+                    </div>
+                    <div v-if="form.customerType === 'Regular'">
+                      <label class="text-xs font-medium text-gray-500">Province *</label>
+                      <select id="province" v-model.number="form.province" required class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option disabled value="">Select province</option>
+                        <option :value="1">Metro Manila</option>
+                      </select>
+                    </div>
+                    <div v-if="form.customerType === 'Regular'">
+                      <label class="text-xs font-medium text-gray-500">Region *</label>
+                      <select id="region" v-model.number="form.region" required class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option disabled value="">Select region</option>
+                        <option :value="1">NCR</option>
+                      </select>
+                    </div>
+                    <div v-if="form.customerType === 'Regular'" class="md:col-span-2">
+                      <label class="text-xs font-medium text-gray-500">Email Address *</label>
+                      <input id="email" v-model.trim="form.email" required type="email" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Unit / Appliance Information *</h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Unit ID *</label>
+                      <input id="unitId" v-model.trim="form.unitId" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Unit Model *</label>
+                      <input id="unitModel" v-model.trim="form.unitModel" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Unit Type *</label>
+                      <input id="unitType" v-model.trim="form.unitType" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Serial Number *</label>
+                      <input id="serialNumber" v-model.trim="form.serialNumber" required type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Installation Date *</label>
+                      <input id="installationDate" v-model="form.installationDate" required type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Warranty Status *</label>
+                      <select id="warrantyStatus" v-model="form.warrantyStatus" required class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option>Under Warranty</option>
+                        <option>Out of Warranty</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Complaint Details</h2>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Complaint Category *</label>
+                      <select id="category" v-model="form.category" required class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option>Mechanical</option>
+                        <option>Electrical</option>
+                        <option>Installation</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Date Issue Occurred *</label>
+                      <input id="issueDate" v-model="form.issueDate" required type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div class="md:col-span-2">
+                      <label class="text-xs font-medium text-gray-500">Complaint Description *</label>
+                      <textarea id="description" v-model.trim="form.description" required rows="4" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-5">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Complaint Control</h2>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Control Number</label>
+                      <input v-model.trim="form.controlNumber" type="text" placeholder="(Optional) Enter control number" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Date Reported</label>
+                      <input v-model="form.dateReported" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Status</label>
+                        <select v-model="form.status" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                          <option>Pending</option>
+                          <option>Ongoing</option>
+                          <option>Resolved</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Priority</label>
+                        <select v-model="form.priority" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                          <option :value="false">Normal</option>
+                          <option :value="true">High</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                  <h2 class="text-sm font-semibold text-[#0d2844] mb-4">Service Assignment</h2>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Assigned Technician</label>
+                      <input v-model.trim="form.technician" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Service Department</label>
+                      <input v-model.trim="form.department" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Scheduled Service Date</label>
+                      <input v-model="form.scheduledDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Estimated Resolution Time</label>
+                      <input v-model.trim="form.estimatedResolutionTime" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                  <button
+                    type="button"
+                    class="w-full flex items-center justify-between px-5 py-4 hover:bg-gray-50 transition"
+                    @click="showResolution = !showResolution"
+                  >
+                    <span class="text-sm font-semibold text-[#0d2844]">Resolution & Follow-up</span>
+                    <svg class="w-4 h-4 text-gray-400 transition-transform" :class="showResolution ? 'rotate-180' : 'rotate-0'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div v-show="showResolution" class="px-5 pb-5 space-y-4">
+                    <div class="grid grid-cols-2 gap-3">
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Resolution Status</label>
+                        <select v-model="form.resolutionStatus" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                          <option>Pending</option>
+                          <option>Resolved</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="text-xs font-medium text-gray-500">Resolution Date</label>
+                        <input v-model="form.resolutionDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Resolution Summary</label>
+                      <textarea v-model.trim="form.resolutionSummary" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                    </div>
+                    <div>
+                      <label class="text-xs font-medium text-gray-500">Follow-up Required</label>
+                      <select v-model="form.followUpRequired" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option>No</option>
+                        <option>Yes</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-end">
+              <a href="service-agent dashboard page.html" class="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition text-center">Cancel</a>
+              <button type="button" class="px-4 py-2 rounded-xl bg-gray-100 text-gray-700 text-sm font-medium hover:bg-gray-200 transition" @click="toastInfo('Draft saved locally (not connected yet)')">
+                Save Draft
+              </button>
+              <button
+                type="submit"
+                :disabled="isSubmitting"
+                class="px-5 py-2 rounded-xl bg-[#0d2844] text-white text-sm font-medium hover:bg-[#0a1f38] hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              >
+                {{ isSubmitting ? "Submitting..." : "Submit Complaint" }}
+              </button>
+            </div>
+          </form>
+          </template>
+
+          <!-- SUMMARY/REVIEW VIEW -->
+          <template v-else>
+            <div class="mb-6">
+              <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-[#0d2844]">Complaint Summary Review</h1>
+              <p class="text-sm text-gray-500 mt-1">Please review all the information before final submission. You can edit any field if needed.</p>
+            </div>
+            <div class="space-y-5">
+              <!-- Retail Customer Information -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Retail Customer Information</h2>
+                  <button @click="editSection = 'customer'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div class="md:col-span-2">
+                    <p class="text-gray-500 font-medium">Customer Type</p>
+                    <p class="text-gray-800 mt-1">{{ form.customerType || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Retailer'">
+                    <p class="text-gray-500 font-medium">Customer ID</p>
+                    <p class="text-gray-800 mt-1">{{ form.customerId || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'">
+                    <p class="text-gray-500 font-medium">Contact Person</p>
+                    <p class="text-gray-800 mt-1">{{ form.contactPerson || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'">
+                    <p class="text-gray-500 font-medium">Contact Number</p>
+                    <p class="text-gray-800 mt-1">{{ form.contactNumber || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'" class="md:col-span-2">
+                    <p class="text-gray-500 font-medium">Address Line 1</p>
+                    <p class="text-gray-800 mt-1">{{ form.addressLine1 || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'">
+                    <p class="text-gray-500 font-medium">Barangay</p>
+                    <p class="text-gray-800 mt-1">{{ form.barangay || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'">
+                    <p class="text-gray-500 font-medium">City</p>
+                    <p class="text-gray-800 mt-1">{{ form.city || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'">
+                    <p class="text-gray-500 font-medium">Province</p>
+                    <p class="text-gray-800 mt-1">{{ form.province || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'">
+                    <p class="text-gray-500 font-medium">Region</p>
+                    <p class="text-gray-800 mt-1">{{ form.region || '—' }}</p>
+                  </div>
+                  <div v-if="form.customerType === 'Regular'" class="md:col-span-2">
+                    <p class="text-gray-500 font-medium">Email Address</p>
+                    <p class="text-gray-800 mt-1">{{ form.email || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unit / Appliance Information -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Unit / Appliance Information</h2>
+                  <button @click="editSection = 'unit'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Unit ID</p>
+                    <p class="text-gray-800 mt-1">{{ form.unitId || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Unit Model</p>
+                    <p class="text-gray-800 mt-1">{{ form.unitModel || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Unit Type</p>
+                    <p class="text-gray-800 mt-1">{{ form.unitType || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Serial Number</p>
+                    <p class="text-gray-800 mt-1">{{ form.serialNumber || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Installation Date</p>
+                    <p class="text-gray-800 mt-1">{{ form.installationDate || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Warranty Status</p>
+                    <p class="text-gray-800 mt-1">{{ form.warrantyStatus || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Complaint Details -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Complaint Details</h2>
+                  <button @click="editSection = 'complaint'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="space-y-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Complaint Category</p>
+                    <p class="text-gray-800 mt-1">{{ form.category || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Date Issue Occurred</p>
+                    <p class="text-gray-800 mt-1">{{ form.issueDate || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Complaint Description</p>
+                    <p class="text-gray-800 mt-1 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap">{{ form.description || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Complaint Control -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Complaint Control</h2>
+                  <button @click="editSection = 'control'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Control Number</p>
+                    <p class="text-gray-800 mt-1 font-mono bg-blue-50 px-3 py-2 rounded-lg">{{ form.controlNumber }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Date Reported</p>
+                    <p class="text-gray-800 mt-1">{{ form.dateReported || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Status</p>
+                    <p class="text-gray-800 mt-1">{{ form.status || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Priority</p>
+                    <p class="text-gray-800 mt-1">{{ form.priority || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Service Assignment -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Service Assignment</h2>
+                  <button @click="editSection = 'service'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Assigned Technician</p>
+                    <p class="text-gray-800 mt-1">{{ form.technician || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Service Department</p>
+                    <p class="text-gray-800 mt-1">{{ form.department || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Scheduled Service Date</p>
+                    <p class="text-gray-800 mt-1">{{ form.scheduledDate || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Estimated Resolution Time</p>
+                    <p class="text-gray-800 mt-1">{{ form.estimatedResolutionTime || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Resolution & Follow-up -->
+              <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                <div class="flex items-center justify-between mb-4">
+                  <h2 class="text-sm font-semibold text-[#0d2844]">Resolution & Follow-up</h2>
+                  <button @click="editSection = 'resolution'" class="text-xs font-medium text-blue-600 hover:text-blue-700 px-3 py-1.5 rounded-lg hover:bg-blue-50 transition">
+                    Edit
+                  </button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p class="text-gray-500 font-medium">Resolution Status</p>
+                    <p class="text-gray-800 mt-1">{{ form.resolutionStatus || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Resolution Date</p>
+                    <p class="text-gray-800 mt-1">{{ form.resolutionDate || '—' }}</p>
+                  </div>
+                  <div class="md:col-span-2">
+                    <p class="text-gray-500 font-medium">Resolution Summary</p>
+                    <p class="text-gray-800 mt-1 bg-gray-50 p-3 rounded-lg whitespace-pre-wrap">{{ form.resolutionSummary || '—' }}</p>
+                  </div>
+                  <div>
+                    <p class="text-gray-500 font-medium">Follow-up Required</p>
+                    <p class="text-gray-800 mt-1">{{ form.followUpRequired || '—' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary Page Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-3 justify-end mt-6">
+              <button 
+                @click="goBackToForm" 
+                class="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition">
+                Back to Edit
+              </button>
+              <button
+                @click="finalSubmitComplaint"
+                :disabled="isSubmitting"
+                class="px-5 py-2 rounded-xl bg-green-600 text-white text-sm font-medium hover:bg-green-700 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              >
+                {{ isSubmitting ? "Submitting..." : "Confirm & Submit" }}
+              </button>
+            </div>
+          </template>
+        </section>
+      </main>
+
+      <!-- EDIT MODAL -->
+      <div v-if="editSection" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-6 my-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-[#0d2844]">Edit {{ getSectionTitle(editSection) }}</h2>
+            <button @click="editSection = null" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="space-y-4 mb-6">
+            <!-- Customer Information Edit -->
+            <template v-if="editSection === 'customer'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Customer Type</label>
+                  <select v-model="form.customerType" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option value="">Select Customer Type</option>
+                    <option value="Retailer">Retailer</option>
+                    <option value="Regular">Regular</option>
+                  </select>
+                </div>
+                <div v-if="form.customerType === 'Retailer'">
+                  <label class="text-xs font-medium text-gray-500">Customer ID</label>
+                  <input v-model.trim="form.customerId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'">
+                  <label class="text-xs font-medium text-gray-500">Contact Person</label>
+                  <input v-model.trim="form.contactPerson" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'">
+                  <label class="text-xs font-medium text-gray-500">Contact Number</label>
+                  <input v-model.trim="form.contactNumber" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'" class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Address Line 1</label>
+                  <input v-model.trim="form.addressLine1" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'">
+                  <label class="text-xs font-medium text-gray-500">Barangay</label>
+                  <input v-model.trim="form.barangay" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'">
+                  <label class="text-xs font-medium text-gray-500">City</label>
+                  <input v-model.trim="form.city" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'">
+                  <label class="text-xs font-medium text-gray-500">Province</label>
+                  <input v-model.trim="form.province" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'">
+                  <label class="text-xs font-medium text-gray-500">Region</label>
+                  <input v-model.trim="form.region" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div v-if="form.customerType === 'Regular'" class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Email Address</label>
+                  <input v-model.trim="form.email" type="email" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+              </div>
+            </template>
+
+            <!-- Unit Information Edit -->
+            <template v-if="editSection === 'unit'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Unit ID</label>
+                  <input v-model.trim="form.unitId" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Unit Model</label>
+                  <input v-model.trim="form.unitModel" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Unit Type</label>
+                  <input v-model.trim="form.unitType" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Serial Number</label>
+                  <input v-model.trim="form.serialNumber" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Installation Date</label>
+                  <input v-model="form.installationDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Warranty Status</label>
+                  <select v-model="form.warrantyStatus" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Under Warranty</option>
+                    <option>Out of Warranty</option>
+                  </select>
+                </div>
+              </div>
+            </template>
+
+            <!-- Complaint Details Edit -->
+            <template v-if="editSection === 'complaint'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Complaint Category</label>
+                  <select v-model="form.category" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Mechanical</option>
+                    <option>Electrical</option>
+                    <option>Installation</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Date Issue Occurred</label>
+                  <input v-model="form.issueDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Complaint Description</label>
+                  <textarea v-model.trim="form.description" rows="4" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                </div>
+              </div>
+            </template>
+
+            <!-- Control Information Edit -->
+            <template v-if="editSection === 'control'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Date Reported</label>
+                  <input v-model="form.dateReported" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Status</label>
+                  <select v-model="form.status" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Pending</option>
+                    <option>Ongoing</option>
+                    <option>Resolved</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Priority</label>
+                  <select v-model="form.priority" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                  </select>
+                </div>
+              </div>
+            </template>
+
+            <!-- Service Assignment Edit -->
+            <template v-if="editSection === 'service'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Assigned Technician</label>
+                  <input v-model.trim="form.technician" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Service Department</label>
+                  <input v-model.trim="form.department" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Scheduled Service Date</label>
+                  <input v-model="form.scheduledDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Estimated Resolution Time</label>
+                  <input v-model.trim="form.estimatedResolutionTime" type="text" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+              </div>
+            </template>
+
+            <!-- Resolution & Follow-up Edit -->
+            <template v-if="editSection === 'resolution'">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Resolution Status</label>
+                  <select v-model="form.resolutionStatus" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>Pending</option>
+                    <option>Resolved</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Resolution Date</label>
+                  <input v-model="form.resolutionDate" type="date" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+                </div>
+                <div class="md:col-span-2">
+                  <label class="text-xs font-medium text-gray-500">Resolution Summary</label>
+                  <textarea v-model.trim="form.resolutionSummary" rows="3" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                </div>
+                <div>
+                  <label class="text-xs font-medium text-gray-500">Follow-up Required</label>
+                  <select v-model="form.followUpRequired" class="mt-1 w-full px-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    <option>No</option>
+                    <option>Yes</option>
+                  </select>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="flex gap-3 justify-end">
+            <button @click="editSection = null" class="px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition">
+              Cancel
+            </button>
+            <button @click="editSection = null" class="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="modalOpen" class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-semibold text-[#0d2844]">Complaint Submitted Successfully</h2>
+            <button @click="modalOpen = false" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div class="bg-[#f0f6ff] border border-blue-100 rounded-xl p-4 mb-4">
+            <p class="text-xs text-gray-500 mb-1">Control Number</p>
+            <p class="text-lg font-bold text-[#0d2844]">{{ form.controlNumber }}</p>
+          </div>
+          <ul class="text-sm text-gray-600 space-y-2 mb-5">
+            <li>Keep your control number for tracking purposes.</li>
+            <li>Our service team will contact you within 24–48 hours.</li>
+            <li>You may use this number for follow-ups and inquiries.</li>
+          </ul>
+          <button @click="modalOpen = false" class="w-full py-2.5 rounded-xl bg-[#0d2844] text-white text-sm font-medium hover:bg-[#0a1f38] transition">
+            OK
+          </button>
+        </div>
+      </div>
+
+      <div
+        v-if="toast.show"
+        class="fixed bottom-6 right-6 flex items-center gap-3 px-4 py-3 rounded-2xl shadow-xl text-white text-sm font-medium z-50 transition-all duration-300"
+        :class="toast.type === 'info' ? 'bg-[#0d2844]' : 'bg-red-500'"
+      >
+        <svg v-if="toast.type === 'info'" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 22a10 10 0 110-20 10 10 0 010 20z" />
+        </svg>
+        <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        {{ toast.message }}
+      </div>
+    </div>
+
+  <script src="../api.js"></script>
+    <script>
+      const { createApp } = Vue;
+
+      const pad2 = (n) => String(n).padStart(2, "0");
+
+      function toDateInputValue(d) {
+        const yyyy = d.getFullYear();
+        const mm = pad2(d.getMonth() + 1);
+        const dd = pad2(d.getDate());
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      createApp({
+        data() {
+          const today = new Date();
+          return {
+            expanded: false,
+            hoverTimer: null,
+            showResolution: false,
+            showSummary: false,
+            editSection: null,
+            modalOpen: false,
+            isSubmitting: false,
+            toast: { show: false, type: "info", message: "" },
+            form: {
+              customerType: "",
+              customerId: "",
+              contactPerson: "",
+              contactNumber: "",
+              addressLine1: "",
+              barangay: "",
+              city: "",
+              province: "",
+              region: "",
+              email: "",
+
+              unitId: "",
+              unitModel: "",
+              unitType: "",
+              serialNumber: "",
+              installationDate: "",
+              warrantyStatus: "Under Warranty",
+
+              controlNumber: "",
+              dateReported: toDateInputValue(today),
+              status: "Pending",
+              priority: false,
+
+              technician: "",
+              department: "",
+              scheduledDate: "",
+              estimatedResolutionTime: "",
+
+              category: "Mechanical",
+              issueDate: "",
+              description: "",
+
+              resolutionStatus: "Pending",
+              resolutionDate: "",
+              resolutionSummary: "",
+              followUpRequired: "No",
+            },
+          };
+        },
+        methods: {
+          onMouseEnter() {
+            this.hoverTimer = setTimeout(() => {
+              this.expanded = true;
+            }, 600);
+          },
+          onMouseLeave() {
+            clearTimeout(this.hoverTimer);
+            this.expanded = false;
+          },
+          toggleSidebar() {
+            clearTimeout(this.hoverTimer);
+            this.expanded = !this.expanded;
+          },
+          showToast(type, message) {
+            this.toast = { show: true, type, message };
+            setTimeout(() => {
+              this.toast.show = false;
+            }, 3000);
+          },
+          toastInfo(message) {
+            this.showToast("info", message);
+          },
+          normalizeSerialNumber(serial) {
+            if (!serial) return null;
+            const asNumber = Number(serial);
+            if (!Number.isNaN(asNumber) && Number.isInteger(asNumber)) {
+              return asNumber;
+            }
+            return null;
+          },
+
+          validateRequiredComplaintFields() {
+            const isEmpty = (v) => {
+              if (v === null || v === undefined) return true;
+              if (typeof v === "number" && Number.isNaN(v)) return true;
+              return String(v).trim() === "";
+            };
+
+            const required = [
+              // Retail Customer Information
+              { key: "customerType", label: "Customer Type", id: "customerType" },
+              ...(this.form.customerType === "Retailer"
+                ? [{ key: "customerId", label: "Customer Number", id: "customerId" }]
+                : []),
+              ...(this.form.customerType === "Regular"
+                ? [
+                    { key: "contactPerson", label: "Contact Person", id: "contactPerson" },
+                    { key: "contactNumber", label: "Contact Number", id: "contactNumber" },
+                    { key: "addressLine1", label: "Address Line 1", id: "addressLine1" },
+                    { key: "barangay", label: "Barangay", id: "barangay" },
+                    { key: "city", label: "City", id: "city" },
+                    { key: "province", label: "Province", id: "province" },
+                    { key: "region", label: "Region", id: "region" },
+                    { key: "email", label: "Email Address", id: "email" },
+                  ]
+                : []),
+
+              // Unit / Appliance Information
+              { key: "unitId", label: "Unit ID", id: "unitId" },
+              { key: "unitModel", label: "Unit Model", id: "unitModel" },
+              { key: "unitType", label: "Unit Type", id: "unitType" },
+              { key: "serialNumber", label: "Serial Number", id: "serialNumber" },
+              { key: "installationDate", label: "Installation Date", id: "installationDate" },
+              { key: "warrantyStatus", label: "Warranty Status", id: "warrantyStatus" },
+
+              // Complaint Details
+              { key: "category", label: "Complaint Category", id: "category" },
+              { key: "issueDate", label: "Date Issue Occurred", id: "issueDate" },
+              { key: "description", label: "Complaint Description", id: "description" },
+            ];
+
+            for (const field of required) {
+              if (isEmpty(this.form[field.key])) {
+                return field;
+              }
+            }
+
+            // Backend requires firstName + lastName for Regular customers.
+            if (this.form.customerType === "Regular") {
+              const parts = String(this.form.contactPerson || "").trim().split(/\s+/).filter(Boolean);
+              if (parts.length < 2) {
+                return { key: "contactPerson", label: "Contact Person (First and Last Name)", id: "contactPerson" };
+              }
+            }
+            return null;
+          },
+
+          buildComplaintPayload() {
+            const isRetailer = this.form.customerType === 'Retailer';
+
+            return {
+              customer: {
+                customerType: isRetailer ? 0 : 1,
+                firstName: isRetailer ? '' : (this.form.contactPerson?.split(' ')[0] || ''),
+                lastName: isRetailer ? '' : (this.form.contactPerson?.split(' ').slice(1).join(' ') || ''),
+                email: isRetailer ? '' : (this.form.email || ''),
+                phone: isRetailer ? '' : (this.form.contactNumber || ''),
+                addressLine1: isRetailer ? '' : (this.form.addressLine1 || ''),
+                barangay: isRetailer ? null : (this.form.barangay || null),
+                city: isRetailer ? null : (this.form.city || null),
+                province: isRetailer ? null : (this.form.province || null),
+                region: isRetailer ? null : (this.form.region || null),
+              },
+              retailCustomer: {
+                customerNumber: isRetailer ? (this.form.customerId || '') : '',
+              },
+              customerProduct: {
+                productModel: this.form.unitModel || '',
+                serialNumber: this.form.serialNumber || '',
+                purchaseDate: this.form.installationDate || new Date().toISOString().split('T')[0],
+              },
+              complaint: {
+                quantity: 1,
+                complaintDets: this.form.description || '',
+                issue: 0,
+                status: 0,
+                priority: String(this.form.priority || '').toLowerCase() === 'high',
+                defective: this.form.category?.toLowerCase().includes('defect') || false,
+              }
+            };
+          },
+
+          // Submit complaint button
+          async submitComplaint() {
+            const missing = this.validateRequiredComplaintFields();
+            if (missing) {
+              this.showToast("error", `Missing required field: ${missing.label}.`);
+              const el = document.getElementById(missing.id);
+              if (el && typeof el.focus === "function") {
+                el.focus();
+              }
+              return;
+            }
+            // Show the summary page instead of directly submitting
+            this.showSummary = true;
+          },
+
+          goBackToForm() {
+            this.showSummary = false;
+            this.editSection = null;
+          },
+
+          getSectionTitle(section) {
+            const titles = {
+              customer: "Retail Customer Information",
+              unit: "Unit / Appliance Information",
+              complaint: "Complaint Details",
+              control: "Complaint Control",
+              service: "Service Assignment",
+              resolution: "Resolution & Follow-up"
+            };
+            return titles[section] || "Information";
+          },
+
+          async finalSubmitComplaint() {
+            if (!window.CRM_API?.createComplaint) {
+              this.showToast("error", "API helper not loaded. Please refresh the page.");
+              return;
+            }
+            this.isSubmitting = true;
+            try {
+              const payload = this.buildComplaintPayload();
+              // Backend DTO expects a top-level `request` wrapper (per validation errors).
+              await window.CRM_API.createComplaint({ request: payload });
+              this.showToast("info", "Complaint submitted to CRM API.");
+              this.form.controlNumber = "";
+
+              // Signal the logs page to refresh (cross-page via localStorage).
+              const ts = String(Date.now());
+              localStorage.setItem("crm_last_complaint_submit_ts", ts);
+              window.dispatchEvent(new Event("crm:complaint-submitted"));
+
+              this.showSummary = false;
+              this.modalOpen = true;
+            } catch (error) {
+              this.showToast("error", error?.message || "Failed to submit complaint.");
+              if (msg.includes('Product model not found')) {
+              this.showToast('error', 'Unit model not found in system. Check the model name.');
+              } else if (msg.includes('Retailer with this CustomerNumber not found')) {
+              this.showToast('error', 'Customer number not found. Check the customer ID.');
+              } else if (msg.includes('Regular customers require complete')) {
+              this.showToast('error', 'Please fill in all customer address fields.');
+              } else {
+              this.showToast('error', msg);
+              }
+              return;
+            } finally {
+              this.isSubmitting = false;
+            }
+          },
+
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>
