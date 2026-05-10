@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRM – Create Employee</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="../api.js"></script>
+</head>
+
+<body class="font-sans bg-[#f0f4f8] text-[#1a5276]">
+  <div id="app" class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside
+      :class="expanded ? 'w-60' : 'w-16'"
+      class="flex-shrink-0 bg-gradient-to-b from-[#0d2844] to-[#1a4a7a] text-white flex flex-col shadow-2xl overflow-hidden transition-all duration-300 ease-in-out"
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
+    >
+      <div class="flex items-center gap-3 px-3.5 py-5 border-b border-white/10 min-h-[72px] cursor-pointer flex-shrink-0" @click="toggleSidebar">
+        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20 overflow-hidden">
+          <img src="../asset/hyundai-appliances-logo.jpg" alt="logo" class="w-full h-full object-cover"
+            onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=&quot;color:white;font-weight:700;font-size:16px&quot;>A</span>'">
+        </div>
+      </div>
+
+      <nav class="flex-1 py-4 flex flex-col gap-0.5 px-2">
+
+        <!-- Home -->
+        <div class="relative group">
+          <a href="admin-dashboard-page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Home</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Home<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Create Employee (active) -->
+        <div class="relative group">
+          <a href="create-employee-page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl bg-white/15 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white whitespace-nowrap transition-all duration-200 delay-100">Create Employee</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Create Employee<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Logs -->
+        <div class="relative group">
+          <a href="admin-logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Logs</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Logs<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+      </nav>
+
+      <!-- Logout -->
+      <div class="px-2 pb-4 border-t border-white/10 pt-3">
+        <div class="relative group">
+          <a href="index.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/50 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/50 group-hover:text-red-400 whitespace-nowrap transition-all duration-200 delay-100">Logout</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Logout<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto">
+
+      <!-- Header -->
+      <header class="bg-white px-8 py-4 flex justify-between items-center border-b border-[#e6ecf8] shadow-[0_2px_8px_rgba(15,23,42,0.06)] sticky top-0 z-10">
+        <div class="flex items-center gap-3">
+          <div>
+            <p class="text-lg font-semibold text-slate-900">Create New Employee</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="px-8 py-6">
+
+        <!-- Form Card -->
+        <div class="rounded-2xl bg-white border border-[#e6ecf8] shadow-[0_10px_24px_rgba(15,23,42,0.06)] overflow-hidden">
+          <div class="px-8 py-6 border-b border-[#e6ecf8]">
+            <h3 class="text-lg font-semibold text-[#0d2844]">Employee Information</h3>
+            <p class="text-sm text-gray-500 mt-1">Fill in the details to create a new employee account</p>
+          </div>
+
+          <form @submit.prevent="handleCreateEmployee" class="px-8 py-8 space-y-6">
+
+            <!-- Row 1: First Name & Last Name -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">First Name *</label>
+                <input
+                  type="text"
+                  v-model="form.firstName"
+                  placeholder="Iya"
+                  required
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Last Name *</label>
+                <input
+                  type="text"
+                  v-model="form.lastName"
+                  placeholder="Deocampo"
+                  required
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+                />
+              </div>
+            </div>
+
+            <!-- Row 2: Email & Phone -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Company Email *</label>
+                <input
+                  type="email"
+                  v-model="form.email"
+                  placeholder="iya.deocampo@gmail.com"
+                  required
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                <input
+                  type="tel"
+                  v-model="form.phone"
+                  placeholder="+63 9XX XXXX XXX"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+                />
+              </div>
+            </div>
+
+            <!-- Row 3: Role & Department -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Role *</label>
+                <select
+                  v-model="form.role"
+                  required
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+                >
+                  <option value="">Select a role</option>
+                  <option value="agent">Service Agent</option>
+                  <option value="manager">Manager</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 4: Password -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Initial Password *</label>
+              <input
+                type="password"
+                v-model="form.password"
+                placeholder="Enter a temporary password"
+                required
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+              />
+              <p class="text-xs text-gray-500 mt-2">Employee will be required to change this on first login</p>
+            </div>
+
+            <!-- Row 5: Address -->
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Address</label>
+              <input
+                type="text"
+                v-model="form.address"
+                placeholder="123 Main Street, City, Province"
+                class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+              />
+            </div>
+
+            <!-- Row 6: Status -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Employment Status</label>
+                <select
+                  v-model="form.status"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+                >
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="onleave">On Leave</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Join Date</label>
+                <input
+                  type="date"
+                  v-model="form.joinDate"
+                  class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300 bg-gray-50"
+                />
+              </div>
+            </div>
+
+            <!-- Error & Success Messages -->
+            <div v-if="errorMessage" class="p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+              {{ errorMessage }}
+            </div>
+            <div v-if="successMessage" class="p-4 rounded-xl bg-green-50 border border-green-200 text-sm text-green-700">
+              {{ successMessage }}
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 pt-4 border-t border-gray-100">
+              <button
+                type="submit"
+                :disabled="submitting"
+                class="px-6 py-3 bg-gradient-to-r from-[#1d5aa7] to-[#2f84dd] text-white rounded-xl text-sm font-semibold hover:opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {{ submitting ? 'Creating...' : 'Create Employee' }}
+              </button>
+              <button
+                type="button"
+                @click="resetForm"
+                class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-200 transition"
+              >
+                Clear Form
+              </button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          expanded: false,
+          hoverTimer: null,
+          submitting: false,
+          errorMessage: '',
+          successMessage: '',
+          form: {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            role: '',
+            department: '',
+            password: '',
+            address: '',
+            status: 'active',
+            joinDate: new Date().toISOString().split('T')[0],
+          }
+        };
+      },
+      methods: {
+        onMouseEnter() { this.hoverTimer = setTimeout(() => { this.expanded = true; }, 600); },
+        onMouseLeave() { clearTimeout(this.hoverTimer); this.expanded = false; },
+        toggleSidebar() { clearTimeout(this.hoverTimer); this.expanded = !this.expanded; },
+        resetForm() {
+          this.form = {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            role: '',
+            password: '',
+            address: '',
+            status: 'active',
+            joinDate: new Date().toISOString().split('T')[0],
+          };
+          this.errorMessage = '';
+          this.successMessage = '';
+        },
+        async handleCreateEmployee() {
+          this.errorMessage = '';
+          this.successMessage = '';
+
+          // Validation
+          if (!this.form.firstName.trim()) {
+            this.errorMessage = 'First name is required.';
+            return;
+          }
+          if (!this.form.lastName.trim()) {
+            this.errorMessage = 'Last name is required.';
+            return;
+          }
+          if (!this.form.email.trim()) {
+            this.errorMessage = 'Company email is required.';
+            return;
+          }
+          if (!this.form.role) {
+            this.errorMessage = 'Please select a role.';
+            return;
+          }
+          if (!this.form.password) {
+            this.errorMessage = 'Initial password is required.';
+            return;
+          }
+
+          this.submitting = true;
+
+          try {
+            // Call API to create employee
+            const response = await window.CRM_API.createEmployee({
+              firstName: this.form.firstName.trim(),
+              lastName: this.form.lastName.trim(),
+              email: this.form.email.trim().toLowerCase(),
+              phone: this.form.phone.trim(),
+              role: this.form.role,
+              password: this.form.password,
+              address: this.form.address.trim(),
+              status: this.form.status,
+              joinDate: this.form.joinDate,
+            });
+
+            this.successMessage = `Employee "${this.form.firstName} ${this.form.lastName}" created successfully!`;
+            this.resetForm();
+
+            // Auto-clear success message after 3 seconds
+            setTimeout(() => {
+              this.successMessage = '';
+            }, 3000);
+          } catch (error) {
+            this.errorMessage = error?.message ?? 'Failed to create employee. Please try again.';
+          } finally {
+            this.submitting = false;
+          }
+        }
+      },
+    }).mount('#app');
+  </script>
+
+</body>
+</html>

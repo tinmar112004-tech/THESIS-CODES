@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    window.CRM_API_USE_NGROK_SKIP_HEADER = true;
+  </script>
+  <script src="../api.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body class="font-sans bg-[#f7f8fa] text-[#1a5276]">
+  <div id="app" class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside
+      :class="expanded ? 'w-60' : 'w-16'"
+      class="flex-shrink-0 bg-gradient-to-b from-[#0d2844] to-[#1a4a7a] text-white flex flex-col shadow-2xl overflow-hidden transition-all duration-300 ease-in-out"
+      @mouseenter="onMouseEnter"
+      @mouseleave="onMouseLeave"
+    >
+      <!-- Logo -->
+      <div class="flex items-center gap-3 px-3.5 py-5 border-b border-white/10 min-h-[72px] cursor-pointer flex-shrink-0" @click="toggleSidebar">
+        <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20 overflow-hidden">
+          <img src="../asset/hyundai-appliances-logo.jpg" alt="logo" class="w-full h-full object-cover"
+            onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=&quot;color:white;font-weight:700;font-size:16px&quot;>R</span>'">
+        </div>
+      </div>
+
+      <!-- Nav -->
+      <nav class="flex-1 py-4 flex flex-col gap-0.5 px-2">
+
+        <!-- Home -->
+        <div class="relative group">
+          <a href="manager-dashboard-page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Home</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Home<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Analytics -->
+        <div class="relative group">
+          <a href="analytics-page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Analytics</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Analytics<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Reports (active) -->
+        <div class="relative group">
+          <a href="generate-reports-page.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl bg-white/15 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white whitespace-nowrap transition-all duration-200 delay-100">Reports</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Reports<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+        <!-- Logs -->
+        <div class="relative group">
+          <a href="manager-logs.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-white/10 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0 relative">
+              <svg class="w-5 h-5 text-white/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span
+                v-if="complaintCount > 0"
+                class="absolute -top-0.5 -right-0.5 min-w-4 h-4 px-1 bg-red-500 rounded-full text-[9px] flex items-center justify-center font-bold text-white"
+              >{{ complaintCount }}</span>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/70 group-hover:text-white whitespace-nowrap transition-all duration-200 delay-100">Logs</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Logs<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+
+      </nav>
+
+      <!-- Logout -->
+      <div class="px-2 pb-4 border-t border-white/10 pt-3">
+        <div class="relative group">
+          <a href="index.html" class="flex items-center gap-3 px-2.5 py-3 rounded-xl hover:bg-red-500/20 transition-all duration-200 cursor-pointer">
+            <div class="w-9 h-9 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-white/50 group-hover:text-red-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+              </svg>
+            </div>
+            <span :class="expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-2'"
+              class="text-sm font-medium text-white/50 group-hover:text-red-400 whitespace-nowrap transition-all duration-200 delay-100">Logout</span>
+          </a>
+          <div v-if="!expanded" class="absolute left-14 top-1/2 -translate-y-1/2 bg-[#0d2844] text-white text-xs px-2.5 py-1.5 rounded-lg shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
+            Logout<div class="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-[#0d2844]"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+      <header class="bg-white px-8 py-6 shadow-sm flex justify-between items-center border-b border-gray-100">
+        <div class="flex items-center gap-3">
+          <div>
+            <p class="text-2xl font-semibold text-slate-900">Generate Reports</p>
+          </div>
+        </div>
+      </header>
+
+      <div class="w-full space-y-6 pt-6 px-6 lg:px-8">
+        <section class="bg-white rounded-2xl shadow-md border border-gray-200/80 p-5">
+          <h3 class="text-sm font-semibold text-[#0d2844] mb-4">Report Filtering</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+            <div class="flex flex-col">
+              <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Report Type</label>
+              <select v-model="selectedReport" class="px-3 py-2 border border-slate-200 rounded-xl bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option>Feedback</option>
+                <option>Approval for Replacement</option>
+                <option>Defective</option>
+              </select>
+            </div>
+            <div class="flex gap-2">
+              <button @click="generate" :disabled="loading" class="px-4 py-2 rounded-xl bg-[#0d2844] text-white text-sm font-medium hover:-translate-y-0.5 hover:shadow-lg transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed">Generate</button>
+              <button @click="exportReportPdf" :disabled="!generated" class="px-4 py-2 rounded-xl border border-gray-200 text-[#0d2844] text-sm font-medium hover:bg-gray-50 transition disabled:opacity-60 disabled:cursor-not-allowed">Export PDF</button>
+            </div>
+            <div class="flex flex-col">
+              <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Product Group</label>
+              <select v-model="filters.productGroup" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option>Select Product Group</option>
+              </select>
+            </div>
+            <div class="flex flex-col">
+              <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Model</label>
+              <select v-model="filters.model" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option>Select Model</option>
+              </select>
+            </div>
+            <div class="flex flex-col">
+              <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Authorised Service Center</label>
+              <select v-model="filters.asc" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <option>Select ASC...</option>
+              </select>
+            </div>
+            <div class="flex flex-col">
+              <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">Start Call Date</label>
+              <input type="date" v-model="filters.startCallDate" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+            </div>
+            <div class="flex flex-col">
+              <label class="text-xs font-medium text-slate-500 mb-1.5 uppercase tracking-wide">End Call Date</label>
+              <input type="date" v-model="filters.endCallDate" class="w-full px-3 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-300" />
+            </div>
+          </div>
+        </section>
+
+        <section v-if="generated" class="bg-white rounded-[28px] shadow-lg border border-gray-200/80 p-5">
+            <div class="flex items-center justify-between gap-3 mb-3">
+              <h3 class="text-sm font-semibold text-[#0d2844]">
+                {{ selectedReport }} Report
+              </h3>
+              <div class="text-xs text-slate-500">
+                Showing <span class="font-semibold text-slate-700">{{ reportRows.length }}</span> record(s)
+              </div>
+            </div>
+
+            <div v-if="loadError" class="text-sm text-red-600 bg-red-50 border border-red-200 rounded-xl p-3 mb-3">
+              {{ loadError }}
+            </div>
+
+            <div v-if="loading" class="text-sm text-slate-500">Loading…</div>
+
+            <div v-else class="overflow-x-auto rounded-2xl border border-slate-200">
+              <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
+                  <tr>
+                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Date</th>
+                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Description</th>
+                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Category</th>
+                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Status</th>
+                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">Model</th>
+                    <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">ASC</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 bg-white">
+                  <tr v-if="reportRows.length === 0">
+                    <td colspan="6" class="px-4 py-3 text-sm text-slate-500 text-center">
+                      No data for the selected filters/date range.
+                    </td>
+                  </tr>
+                  <tr v-for="row in reportRows" :key="row.id" class="hover:bg-slate-50/70">
+                    <td class="px-4 py-3 text-sm text-slate-600 whitespace-nowrap">{{ formatDate(row.submittedAt) }}</td>
+                    <td class="px-4 py-3 text-sm text-slate-800 min-w-[280px]">{{ row.description }}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600 whitespace-nowrap">{{ row.category }}</td>
+                    <td class="px-4 py-3 text-sm">
+                      <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold"
+                        :class="getStatusClass(row.status)">
+                        <span class="w-1.5 h-1.5 rounded-full inline-block" :class="getStatusDot(row.status)"></span>
+                        {{ row.status }}
+                      </span>
+                    </td>
+                    <td class="px-4 py-3 text-sm text-slate-600 whitespace-nowrap">{{ row.model || '—' }}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600 whitespace-nowrap">{{ row.asc || '—' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+    createApp({
+      data() {
+        return {
+          expanded: false,
+          hoverTimer: null,
+          loading: false,
+          loadError: '',
+          pendingItems: [],
+          resolvedItems: [],
+          approvedItems: [],
+          allItems: [],
+          startDate: '',
+          endDate: '',
+          selectedReport: 'Feedback',
+          generated: false,
+          filters: { productGroup: '', productType: '', model: '', asc: '', startCallDate: '', endCallDate: '' },
+        };
+      },
+      computed: {
+        complaintCount() {
+          // Red badge should show only when complaints need action (Pending + Resolved).
+          return (this.pendingItems?.length ?? 0) + (this.resolvedItems?.length ?? 0);
+        },
+        reportRows() {
+          if (!this.generated) return [];
+          const list = Array.isArray(this.allItems) ? this.allItems : [];
+
+          // Map UI "Report Type" to normalized report bucket.
+          const reportType = (this.selectedReport || '').toLowerCase();
+          const categoryMatch = (c) => {
+            if (!reportType) return true;
+            if (reportType.includes('approval')) return c.reportBucket === 'approval';
+            if (reportType.includes('defective')) return c.reportBucket === 'defective';
+            return c.reportBucket === 'feedback';
+          };
+
+          const matchDateRange = (iso, start, end) => {
+            const d = iso ? iso.toString().slice(0, 10) : '';
+            const matchStart = !start || (d && d >= start);
+            const matchEnd = !end || (d && d <= end);
+            return matchStart && matchEnd;
+          };
+
+          return list
+            .filter(categoryMatch)
+            .filter(c => matchDateRange(c.submittedAt, this.startDate, this.endDate))
+            .filter(c => !this.filters.model || (c.model || '').toString() === this.filters.model)
+            .filter(c => !this.filters.asc || (c.asc || '').toString() === this.filters.asc)
+            .filter(c => matchDateRange(c.callDate, this.filters.startCallDate, this.filters.endCallDate));
+        },
+      },
+      methods: {
+        onMouseEnter() { this.hoverTimer = setTimeout(() => { this.expanded = true; }, 600); },
+        onMouseLeave() { clearTimeout(this.hoverTimer); this.expanded = false; },
+        toggleSidebar() { clearTimeout(this.hoverTimer); this.expanded = !this.expanded; },
+        generate() { this.generated = true; },
+        formatDate(dateString) {
+          if (!dateString) return '';
+          const date = new Date(dateString);
+          if (Number.isNaN(date.getTime())) return dateString.toString().slice(0, 10);
+          return date.toLocaleDateString('en-US', { year: 'numeric', month: '2-digit', day: '2-digit' });
+        },
+        getStatusClass(status) {
+          if (status === 'Approved' || status === 'Completed') return 'bg-green-50 text-green-700 border border-green-200';
+          if (status === 'Resolved') return 'bg-blue-50 text-blue-700 border border-blue-200';
+          return 'bg-yellow-50 text-yellow-700 border border-yellow-200';
+        },
+        getStatusDot(status) {
+          if (status === 'Approved' || status === 'Completed') return 'bg-green-500';
+          if (status === 'Resolved') return 'bg-blue-500';
+          return 'bg-yellow-500';
+        },
+
+        async exportReportPdf() {
+          const params = new URLSearchParams({
+            barangay: this.filters.barangay || '',
+            itemName: this.filters.item || '',
+            productType: this.filters.productType || '',
+            complaintType: this.filters.complaintType || '',
+            start: this.startDate || '',
+            end: this.endDate || '',
+          });
+
+          const url = `/analytics/pdf?${params.toString()}`;
+          window.open(url, '_blank');
+        },
+
+        normalizeComplaint(raw) {
+          const obj = raw && typeof raw === 'object' ? raw : {};
+          const statusRaw = (obj.status ?? obj.complaintStatus ?? '').toString().toLowerCase();
+          const status =
+            statusRaw.includes('approve') ? 'Approved'
+            : statusRaw.includes('resolve') ? 'Resolved'
+            : 'Pending';
+
+          const textBlob = [
+            obj.category,
+            obj.type,
+            obj.complaintType,
+            obj.reportType,
+            obj.complaintDets,
+            obj.description,
+            obj.message,
+          ].map(v => (v ?? '').toString().toLowerCase()).join(' ');
+
+          // If complaint is not explicitly Feedback/Approval, treat it as Defective.
+          const reportBucket = textBlob.includes('approval') || status === 'Approved'
+            ? 'approval'
+            : textBlob.includes('feedback')
+              ? 'feedback'
+              : 'defective';
+
+          return {
+            id: obj.id ?? obj.complaintId ?? `${obj.referenceNo ?? ''}-${obj.createdAt ?? obj.submittedAt ?? Math.random()}`,
+            description: obj.description ?? obj.complaintDets ?? obj.message ?? obj.details ?? 'No description',
+            submittedAt: obj.submittedAt ?? obj.createdAt ?? obj.date ?? null,
+            callDate: obj.callDate ?? obj.startCallDate ?? obj.callStartDate ?? null,
+            category: obj.category ?? obj.complaintType ?? obj.type ?? obj.reportType ?? '',
+            model: obj.model ?? obj.modelName ?? obj.productModel ?? obj.unitModel ?? '',
+            asc: obj.asc ?? obj.serviceCenter ?? obj.authorisedServiceCenter ?? '',
+            cn: obj.controlNumber ?? obj.complaintNumber ?? obj.referenceNo ?? obj.cn ?? obj.complaintId ?? obj.id ?? '',
+            barangay: obj.barangay ?? obj.addressBarangay ?? obj.customerBarangay ?? '',
+            item: obj.itemName ?? obj.item ?? obj.product ?? obj.productName ?? obj.unitId ?? '',
+            type: obj.type ?? obj.productType ?? obj.complaintType ?? obj.category ?? '',
+            complaint: obj.complaint ?? obj.complaintDets ?? obj.description ?? obj.message ?? '',
+            resolution: obj.resolution ?? obj.resolutionSummary ?? obj.resolutionStatus ?? status,
+            status,
+            reportBucket,
+          };
+        },
+        
+        async loadComplaints() {
+          this.loading = true;
+          this.loadError = '';
+          try {
+            const data = await window.CRM_API.getComplaints();
+            const list = Array.isArray(data) ? data : (data?.items ?? data?.value ?? []);
+            const normalized = (Array.isArray(list) ? list : []).map(this.normalizeComplaint);
+            this.allItems = normalized;
+            this.pendingItems = normalized.filter(x => x.status === 'Pending');
+            this.resolvedItems = normalized.filter(x => x.status === 'Resolved');
+            this.approvedItems = normalized.filter(x => x.status === 'Approved');
+          } catch (e) {
+            this.loadError = e?.message ?? 'Failed to load complaints';
+          } finally {
+            this.loading = false;
+          }
+        },
+      },
+      mounted() {
+        this.loadComplaints();
+      },
+    }).mount('#app');
+  </script>
+</body>
+</html>
