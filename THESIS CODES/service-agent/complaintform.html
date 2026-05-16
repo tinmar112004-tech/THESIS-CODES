@@ -996,7 +996,8 @@
 
             return {
               customer: {
-                customerType: isRetailer ? 0 : 1,
+                // Must match CRM__Backend_.Models.Enums.CustomerType (default: Regular = 0, Retailer = 1).
+                customerType: isRetailer ? 1 : 0,
                 firstName: isRetailer ? '' : (this.form.contactPerson?.split(' ')[0] || ''),
                 lastName: isRetailer ? '' : (this.form.contactPerson?.split(' ').slice(1).join(' ') || ''),
                 email: isRetailer ? '' : (this.form.email || ''),
@@ -1020,7 +1021,7 @@
                 complaintDets: this.form.description || '',
                 issue: 0,
                 status: 0,
-                priority: String(this.form.priority || '').toLowerCase() === 'high',
+                priority: Boolean(this.form.priority),
                 defective: this.form.category?.toLowerCase().includes('defect') || false,
               }
             };
@@ -1066,8 +1067,8 @@
             this.isSubmitting = true;
             try {
               const payload = this.buildComplaintPayload();
-              // Backend DTO expects a top-level `request` wrapper (per validation errors).
-              await window.CRM_API.createComplaint({ request: payload });
+              // Body must match CreateComplaintRequest at JSON root (not wrapped in "request").
+              await window.CRM_API.createComplaint(payload);
               this.showToast("info", "Complaint submitted to CRM API.");
               this.form.controlNumber = "";
 
@@ -1079,17 +1080,19 @@
               this.showSummary = false;
               this.modalOpen = true;
             } catch (error) {
-              this.showToast("error", error?.message || "Failed to submit complaint.");
-              if (msg.includes('Product model not found')) {
-              this.showToast('error', 'Unit model not found in system. Check the model name.');
-              } else if (msg.includes('Retailer with this CustomerNumber not found')) {
-              this.showToast('error', 'Customer number not found. Check the customer ID.');
-              } else if (msg.includes('Regular customers require complete')) {
-              this.showToast('error', 'Please fill in all customer address fields.');
-              } else {
-              this.showToast('error', msg);
+              const msg = String(error?.message || "");
+              let userMsg = msg || "Failed to submit complaint.";
+              if (msg.includes("Product model not found")) {
+                userMsg = "Unit model not found in the system. Check the model name matches the catalog.";
+              } else if (
+                msg.includes("Retailer with this CustomerNumber not found") ||
+                msg.includes("CustomerNumber is required for Retailer")
+              ) {
+                userMsg = "Customer number not found or missing. Check the retailer customer ID.";
+              } else if (msg.includes("Regular customers require complete")) {
+                userMsg = "Please fill in all customer and address fields.";
               }
-              return;
+              this.showToast("error", userMsg);
             } finally {
               this.isSubmitting = false;
             }
